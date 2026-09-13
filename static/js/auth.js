@@ -39,7 +39,9 @@ function updateHeader(auth, headerRight) {
             : null;
 
         const avatarHtml = base
-            ? `<picture><source srcset="${base}.gif" type="image/gif"><source srcset="${base}.webp" type="image/webp"><source srcset="${base}.png" type="image/png"><img class="user-avatar" src="${base}.${isAnimated ? 'gif' : 'png'}" alt="${name}"></picture>`
+            ? (isAnimated
+                ? `<picture><source srcset="${base}.gif" type="image/gif"><img class="user-avatar" src="${base}.gif" alt="${name}"></picture>`
+                : `<picture><source srcset="${base}.webp" type="image/webp"><img class="user-avatar" src="${base}.png" alt="${name}"></picture>`)
             : '<img class="user-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="">';
 
         headerRight.innerHTML = `
@@ -65,9 +67,28 @@ function updateHeader(auth, headerRight) {
         logoutBtn.addEventListener('click', logout);
 
         const avatarImg = headerRight.querySelector('.user-avatar');
-        if (base) {
-            avatarImg.addEventListener('error', function() {
-                this.src = 'https://cdn.discordapp.com/embed/avatars/0.png';
+        if (base && !headerRight.dataset.avatarRetried) {
+            avatarImg.addEventListener('error', async function() {
+                let fixed = false;
+                try {
+                    const res = await fetch('/api/auth/me/refresh', { credentials: 'include' });
+                    const fresh = await res.json();
+                    if (fresh.authenticated && fresh.user && fresh.user.avatar !== auth.user.avatar) {
+                        window.__AUTH__ = fresh;
+                        updateHeader(fresh, headerRight);
+                        fixed = true;
+                    }
+                } catch {}
+                if (!fixed) {
+                    const pic = headerRight.querySelector('picture');
+                    if (pic) {
+                        const fallbackImg = document.createElement('img');
+                        fallbackImg.className = 'user-avatar';
+                        fallbackImg.src = 'https://cdn.discordapp.com/embed/avatars/0.png';
+                        fallbackImg.alt = '';
+                        pic.replaceWith(fallbackImg);
+                    }
+                }
             }, { once: true });
         }
     } else {

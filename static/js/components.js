@@ -12,7 +12,8 @@
                     '<a href="/premium" class="nav-link" data-nav="premium">Premium</a>' +
                     '<a href="/shop" class="nav-link" data-nav="shop">Shop</a>' +
                     '<a href="/stats" class="nav-link" data-nav="stats">Stats</a>' +
-                    '<a href="https://status.disc-tools.de/status/dash" class="nav-link" target="_blank" rel="noopener">Status</a>' +
+                    '<a href="/polls" class="nav-link" data-nav="polls">Polls</a>' +
+                    '<a href="https://status.disc-tools.de/#cat-dash" class="nav-link" target="_blank" rel="noopener">Status</a>' +
                 '</nav>' +
                 '<div class="header-right" id="header-right">' +
                     '<a class="btn-discord" href="/api/auth/login">' +

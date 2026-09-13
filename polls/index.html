@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Polls – Disc-Tools</title>
+    <meta name="description" content="Community polls for Disc-Tools. Share your ideas, vote on feature requests and discuss with others.">
+    <meta property="og:title" content="Community Polls – Disc-Tools">
+    <meta property="og:description" content="Vote on ideas and feature requests for Disc-Tools.">
+    <meta property="og:image" content="https://dash.disc-tools.de/static/assets/img/icon.png">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://dash.disc-tools.de/polls/">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/polls.css?v=4">
+    <link rel="stylesheet" href="/static/icons/css/all.min.css">
+    <link rel="icon" type="image/png" href="/static/assets/img/icon.png">
+</head>
+<body>
+    <template-header data-page="polls"></template-header>
+
+    <main class="polls-page">
+        <div class="polls-hero">
+            <h1><i class="fa-solid fa-square-poll-vertical"></i> Community Polls</h1>
+            <p>Share ideas, vote on feature requests and discuss with the community.</p>
+        </div>
+
+        <div class="sort-tabs" id="sort-tabs">
+            <button class="sort-tab active" data-sort="new"><i class="fa-solid fa-clock"></i> Newest</button>
+            <button class="sort-tab" data-sort="top"><i class="fa-solid fa-fire"></i> Top</button>
+        </div>
+
+        <div id="login-hint" style="display:none;">
+            <div class="login-hint-card">
+                <i class="fa-brands fa-discord"></i> Log in with Discord to vote and comment.
+                <a href="/api/auth/login">Login</a>
+            </div>
+        </div>
+
+        <div id="poll-list">
+            <div class="loading-state"><i class="fa-solid fa-circle-notch fa-spin"></i></div>
+        </div>
+    </main>
+
+    <template-footer></template-footer>
+
+    <script src="/static/js/components.js?v=5"></script>
+    <script src="/static/js/auth.js?v=2"></script>
+    <script src="/static/js/cookie-banner.js?v=3"></script>
+    <script src="/static/js/polls.js?v=3"></script>
+    <script defer src="https://umami.disc-tools.de/script.js" data-website-id="71c24f0f-5dfe-41b7-a2ba-0585cba7946c"></script>
+</body>
+</html>

@@ -24,6 +24,10 @@ checkAuth().then(function(auth) {
                 document.getElementById('user-name').textContent = data.user ? (data.user.global_name || data.user.username) : '-';
                 document.getElementById('server-name').textContent = data.guild ? data.guild.name : 'Disc-Tools';
                 document.getElementById('success-state').classList.add('state-active');
+                if (data.verified) {
+                    var vb = document.getElementById('verified-badge');
+                    if (vb) vb.style.display = 'flex';
+                }
                 history.replaceState({}, '', '/success/invite');
                 setTimeout(function() { window.location.href = '/my-servers'; }, 2500);
             } else {

@@ -92,6 +92,12 @@
         <priority>0.7</priority>
     </url>
     <url>
+        <loc>https://dash.disc-tools.de/polls/</loc>
+        <lastmod>2026-08-24</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
         <loc>https://dash.disc-tools.de/invite/</loc>
         <lastmod>2026-07-25</lastmod>
         <changefreq>monthly</changefreq>
