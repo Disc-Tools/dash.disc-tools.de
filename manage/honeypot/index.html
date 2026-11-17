@@ -1,67 +1,49 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Honeypot – Disc-Tools</title>
-    <meta property="og:title" content="Honeypot – Disc-Tools">
-    <meta property="og:description" content="Set up a honeypot channel to automatically punish users who send messages.">
-    <meta property="og:image" content="https://dash.disc-tools.de/static/assets/img/icon.png">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary">
-    <meta name="robots" content="noindex">
-    <link rel="stylesheet" href="/static/css/main.css">
-    <link rel="stylesheet" href="/static/css/profile.css">
-    <link rel="stylesheet" href="/static/css/manage.css">
-    <link rel="stylesheet" href="/static/icons/css/all.min.css">
-    <link rel="icon" type="image/png" href="/static/assets/img/icon.png">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111014">
+    <title>Honeypot | Disc-Tools</title>
+    <link rel="icon" href="/static/assets/img/disc-tools.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://dash.disc-tools.de" crossorigin>
+    <link rel="preload" href="/static/fonts/SpaceGrotesk/SpaceGrotesk.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/static/css/dashboard.css?v=launch-20261117">
+    <link rel="stylesheet" href="/static/css/server-overview.css?v=launch-20261117">
+    <script src="/static/js/dashboard-session.js?v=launch-20261117" defer></script>
+    <link rel="stylesheet" href="/static/css/server-settings.css?v=launch-20261117">
+    <script src="/static/js/manage-settings.js?v=launch-20261117" defer></script>
+    <script src="/static/js/server-honeypot.js?v=launch-20261117" defer></script>
 </head>
-<body>
-    <main class="profile-page">
-        <nav class="profile-sidebar" id="profile-sidebar">
-            <div class="profile-sidebar-section">
-                <div class="profile-sidebar-user">
-                    <div class="server-sidebar-icon" id="server-sidebar-icon"><i class="fa-solid fa-server"></i></div>
-                    <div class="profile-sidebar-name">
-                        <strong id="server-sidebar-name">Loading…</strong>
-                        <span id="server-sidebar-id">-</span>
-                    </div>
-                </div>
+<body class="manage-page">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <aside class="manage-sidebar" aria-label="Server">
+        <div class="manage-sidebar-top">
+            <button class="manage-sidebar-toggle button button-outline" type="button" aria-controls="manage-sidebar-body" aria-expanded="false" hidden>Server menu</button>
+        </div>
+        <div class="manage-sidebar-body" id="manage-sidebar-body">
+            <div class="manage-identity" id="manage-identity" hidden>
+                <div class="manage-icon" id="server-sidebar-icon" aria-hidden="true"></div>
+                <div><strong id="server-sidebar-name"></strong><small id="server-sidebar-id"></small></div>
             </div>
-            <div class="profile-sidebar-section">
-                <button class="profile-sidebar-section-label">
-                    Server
-                    <i class="fa-solid fa-chevron-down"></i>
-                </button>
-                <div class="profile-sidebar-section-items">
-                    <a href="" class="profile-nav-item" id="nav-overview" data-panel="overview">
-                        <i class="fa-solid fa-house"></i> <span>Overview</span>
-                    </a>
-                </div>
-            </div>
-            <div class="profile-sidebar-section">
-                <button class="profile-sidebar-section-label">
-                    Features
-                    <i class="fa-solid fa-chevron-down"></i>
-                </button>
-                <div class="profile-sidebar-section-items">
-                    <a href="" class="profile-nav-item" id="nav-verification" data-panel="verification">
-                        <i class="fa-solid fa-circle-check"></i> <span>Verification</span>
-                    </a>
-                    <a href="" class="profile-nav-item active" id="nav-honeypot" data-panel="honeypot">
-                        <i class="fa-solid fa-spider"></i> <span>Honeypot</span>
-                    </a>
-                </div>
-            </div>
-            <div class="profile-sidebar-bottom">
-                <a href="" class="profile-nav-item" id="nav-settings">
-                    <i class="fa-solid fa-gear"></i> <span>Settings</span>
-                </a>
-                <a href="/my-servers" class="profile-nav-item"><i class="fa-solid fa-arrow-left"></i> <span>Back to Servers</span></a>
-            </div>
-        </nav>
-        <div class="profile-panel">
-            <h2><i class="fa-solid fa-spider"></i> Honeypot</h2>
+            <nav id="manage-navigation" class="manage-nav" aria-label="Server management">
+                <a id="nav-overview" data-panel="overview">Overview</a>
+                <a id="nav-verification" data-panel="verification">Verification</a>
+                <a id="nav-honeypot" aria-current="page" data-panel="honeypot">Honeypot</a>
+                <a id="nav-bump" data-panel="bump">Bump Reminder</a>
+            </nav>
+        </div>
+        <div class="manage-sidebar-actions">
+            <a class="button button-outline" id="nav-settings" data-panel="settings">Settings</a>
+            <a class="manage-back button button-outline" href="/my-servers/"><span aria-hidden="true">←</span> Back to my servers</a>
+        </div>
+    </aside>
+
+    <main class="manage-main" id="main" tabindex="-1">
+        <div class="manage-content">
+            <div class="manage-status" id="settings-loading" role="status">Loading server settings…</div>
+        <div class="profile-panel" hidden>
+            <h1> Honeypot</h1>
             <p class="profile-panel-sub" id="server-sub">-</p>
 
             <div class="settings-card">
@@ -114,32 +96,30 @@
             </div>
 
             <div class="honeypot-info">
-                <p><i class="fa-solid fa-circle-info"></i> When enabled, the bot will monitor the selected channel. Any user who sends a message there will be <strong>immediately</strong> kicked or banned. The message will be deleted automatically.</p>
+                <p> When enabled, the bot will monitor the selected channel. Any user who sends a message there will be <strong>immediately</strong> kicked or banned. The message will be deleted automatically.</p>
             </div>
 
             <div class="settings-actions">
             </div>
             <div class="modal-overlay" id="role-warning-modal" hidden>
                 <div class="modal-card">
-                    <div class="modal-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="modal-icon"></div>
                     <h2>Role Hierarchy Warning</h2>
-                    <p>The bot's role must be <strong>above</strong> the Verified and Unverified roles in the server's role list. <a href="https://support.discord.com/hc/en-us/articles/214836687-Role-Management-101" target="_blank">Learn more</a></p>
+                    <p>The bot's role must be <strong>above</strong> the Verified and Unverified roles in the server's role list. <a href="https://support.discord.com/hc/en-us/articles/214836687-Role-Management-101" target="_blank" rel="noopener noreferrer">Learn more</a></p>
                     <button class="btn-modal-close" id="btn-role-warning-close">Got it</button>
                 </div>
             </div>
         </div>
-        <div class="unsaved-bar" id="unsaved-bar">
+        <div class="unsaved-bar" id="unsaved-bar" style="display:none">
             <div class="unsaved-bar-text">You have unsaved changes</div>
             <div class="unsaved-bar-actions">
                 <button class="unsaved-btn-discard" id="btn-discard">Discard</button>
                 <button class="unsaved-btn-save" id="btn-save-bar">Save Changes</button>
             </div>
         </div>
-        <div class="toast" id="toast" hidden></div>
+        <div class="toast" id="toast" role="status" hidden></div>
+
+        </div>
     </main>
-    <script src="/static/js/cookie-banner.js?v=3"></script>
-    <script src="/static/js/auth.js?v=2"></script>
-    <script src="/static/js/server-honeypot.js?v=2"></script>
-    <script defer src="https://umami.disc-tools.de/script.js" data-website-id="71c24f0f-5dfe-41b7-a2ba-0585cba7946c"></script>
 </body>
 </html>

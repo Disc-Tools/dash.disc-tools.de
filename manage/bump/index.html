@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111014">
+    <title>Bump Reminder | Disc-Tools</title>
+    <link rel="icon" href="/static/assets/img/disc-tools.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://dash.disc-tools.de" crossorigin>
+    <link rel="preload" href="/static/fonts/SpaceGrotesk/SpaceGrotesk.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/static/css/dashboard.css?v=launch-20261117">
+    <link rel="stylesheet" href="/static/css/server-overview.css?v=launch-20261117">
+    <script src="/static/js/dashboard-session.js?v=launch-20261117" defer></script>
+    <link rel="stylesheet" href="/static/css/server-settings.css?v=launch-20261117">
+    <script src="/static/js/manage-settings.js?v=launch-20261117" defer></script>
+    <script src="/static/js/server-bump.js?v=launch-20261117" defer></script>
+</head>
+<body class="manage-page">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <aside class="manage-sidebar" aria-label="Server">
+        <div class="manage-sidebar-top">
+            <button class="manage-sidebar-toggle button button-outline" type="button" aria-controls="manage-sidebar-body" aria-expanded="false" hidden>Server menu</button>
+        </div>
+        <div class="manage-sidebar-body" id="manage-sidebar-body">
+            <div class="manage-identity" id="manage-identity" hidden>
+                <div class="manage-icon" id="server-sidebar-icon" aria-hidden="true"></div>
+                <div><strong id="server-sidebar-name"></strong><small id="server-sidebar-id"></small></div>
+            </div>
+            <nav id="manage-navigation" class="manage-nav" aria-label="Server management">
+                <a id="nav-overview" data-panel="overview">Overview</a>
+                <a id="nav-verification" data-panel="verification">Verification</a>
+                <a id="nav-honeypot" data-panel="honeypot">Honeypot</a>
+                <a id="nav-bump" aria-current="page" data-panel="bump">Bump Reminder</a>
+            </nav>
+        </div>
+        <div class="manage-sidebar-actions">
+            <a class="button button-outline" id="nav-settings" data-panel="settings">Settings</a>
+            <a class="manage-back button button-outline" href="/my-servers/"><span aria-hidden="true">←</span> Back to my servers</a>
+        </div>
+    </aside>
+
+    <main class="manage-main" id="main" tabindex="-1">
+        <div class="manage-content">
+            <div class="manage-status" id="settings-loading" role="status">Loading server settings…</div>
+        <div class="profile-panel" hidden>
+            <h1> Bump Reminder</h1>
+            <p class="profile-panel-sub" id="server-sub">-</p>
+
+            <div class="settings-card">
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <label class="setting-label" for="toggle-bump-enabled">Enable Bump Reminder</label>
+                        <div class="setting-desc">Detect DISBOARD bumps and remind the user after 2 hours. The feature is off until you activate it here.</div>
+                    </div>
+                    <div class="setting-control"></div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggle-bump-enabled" aria-label="Enable bump reminder">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <label class="setting-label" for="setting-bump-channel">Bump Channel</label>
+                        <div class="setting-desc">Channel where DISBOARD bump messages are posted.</div>
+                    </div>
+                    <div class="setting-control">
+                        <select id="setting-bump-category" aria-label="Filter by category">
+                            <option value="">All Categories</option>
+                        </select>
+                        <select id="setting-bump-channel">
+                            <option value="">- None -</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="honeypot-info">
+                <p> When activated, the bot watches the selected channel for DISBOARD bumps. After each bump it thanks the user, tracks streaks and pings them exactly <strong>2 hours</strong> later so they can bump again.</p>
+            </div>
+
+            <div class="settings-actions">
+            </div>
+        </div>
+        <div class="unsaved-bar" id="unsaved-bar" style="display:none">
+            <div class="unsaved-bar-text">You have unsaved changes</div>
+            <div class="unsaved-bar-actions">
+                <button class="unsaved-btn-discard" id="btn-discard">Discard</button>
+                <button class="unsaved-btn-save" id="btn-save-bar">Save Changes</button>
+            </div>
+        </div>
+        <div class="toast" id="toast" role="status" hidden></div>
+
+        </div>
+    </main>
+</body>
+</html>

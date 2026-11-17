@@ -1,370 +1,179 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disc-Tools Premium - Alt Detection, HD GIFs &amp; More from €5/month</title>
-    <meta name="description" content="Unlock premium Discord utilities - alt account detection, HD quote GIFs without watermark, exclusive roles, and early access. Cancel anytime. Starting at €5/month.">
-    <meta property="og:title" content="Disc-Tools Premium - Alt Detection &amp; HD GIFs | Disc-Tools">
-    <meta property="og:description" content="Unlock premium Discord utilities - alt account detection, HD quote GIFs without watermark, exclusive roles, and early access. Cancel anytime. Starting at €5/month.">
-    <meta property="og:image" content="https://dash.disc-tools.de/static/assets/img/og/premium.png">
-    <meta name="twitter:image" content="https://dash.disc-tools.de/static/assets/img/og/premium.png">
-    <meta property="og:url" content="https://dash.disc-tools.de/premium/">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary">
-    <link rel="canonical" href="https://dash.disc-tools.de/premium/">
-    <link rel="preconnect" href="https://umami.disc-tools.de">
-    <link rel="stylesheet" href="/static/css/main.css?v=2">
-    <link rel="stylesheet" href="/static/icons/css/all.min.css">
-    <link rel="icon" type="image/png" href="/static/assets/img/icon.png">
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://dash.disc-tools.de"},
-            {"@type": "ListItem", "position": 2, "name": "Premium", "item": "https://dash.disc-tools.de/premium"}
-        ]
-    }
-    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111014">
+    <meta name="description" content="Compare Free and Premium on Disc-Tools, check purchase availability and manage an existing subscription.">
+    <title>Premium | Disc-Tools</title>
+    <link rel="icon" href="/static/assets/img/disc-tools.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://dash.disc-tools.de" crossorigin>
+    <link rel="preload" href="/static/fonts/SpaceGrotesk/SpaceGrotesk.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/static/css/dashboard.css?v=launch-20261117">
+    <link rel="stylesheet" href="/static/css/premium.css?v=launch-20261117">
+    <script src="/static/js/dashboard-session.js?v=launch-20261117" defer></script>
+    <script src="/static/js/dashboard.js?v=launch-20261117" defer></script>
 </head>
 <body>
-    <template-header data-page="premium"></template-header>
-
-    <div class="prem-page">
-
-        <section class="prem-hero">
-            <h1>Supercharge your<br><span class="grad">Discord server</span></h1>
-            <p class="sub">Powerful tools trusted by our community - starting at just €5/month.</p>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+        <div class="wrap header-inner">
+            <a class="brand" href="/" aria-label="Disc-Tools home">
+                <img src="/static/assets/img/disc-tools.svg" width="32" height="32" alt="">
+                Disc-Tools
+            </a>
+            <button class="menu-toggle" type="button" aria-controls="navigation" aria-expanded="false" hidden>Menu</button>
+            <nav id="navigation" aria-label="Main navigation">
+                <a href="/#features">Features</a>
+                <a href="/#commands">Commands</a>
+                <a href="/premium/" aria-current="page">Premium</a>
+                <a href="https://discord.gg/rtRs8rhj5u">Support</a>
+                <a class="button button-outline" id="dashboard-sign-in" href="https://dash.disc-tools.de/api/auth/login">Sign in with Discord</a>
+                <details class="account-menu" id="dashboard-account" hidden>
+                    <summary class="button button-outline">
+                        <img class="account-avatar" width="26" height="26" alt="">
+                        <span class="account-name"></span>
+                        <span class="account-chevron" aria-hidden="true"></span>
+                    </summary>
+                    <div class="account-actions">
+                        <a href="/my-servers/">My servers</a>
+                        <a href="/profile/">Account</a>
+                        <button type="button" id="dashboard-logout">Logout</button>
+                        <p class="account-error" role="status" hidden></p>
+                    </div>
+                </details>
+            </nav>
+        </div>
+    </header>
+    <main id="main">
+        <section class="wrap premium-hero" aria-labelledby="premium-title">
+            <div class="premium-intro">
+                <h1 id="premium-title">Disc-Tools <em>Premium</em></h1>
+                <p>Save more server backups, look up linked Discord accounts and export HD quote GIFs without a watermark.</p>
+                <div class="actions">
+                    <a class="button button-primary" href="/profile/billing/manage/">Manage subscription <span aria-hidden="true">↗</span></a>
+                    <a class="button button-outline" href="#compare">Compare features</a>
+                </div>
+            </div>
+            <aside class="premium-availability" aria-labelledby="availability-title">
+                <h2 id="availability-title">Purchases paused</h2>
+                <p>New subscriptions, one-time purchases and gifts are temporarily unavailable. Existing memberships remain active.</p>
+                <a href="https://dash.disc-tools.de/premium/">Check availability on the live dashboard <span aria-hidden="true">↗</span></a>
+            </aside>
         </section>
 
-        <!-- Login notice (shown when not authed) -->
-        <div class="login-notice" id="login-notice">
-            <i class="fa-solid fa-circle-info"></i>
-            <span>Log in with Discord to <a href="/api/auth/login">connect your account</a> before purchasing.</span>
-        </div>
-
-        <!-- Main content -->
-        <div class="prem-main">
-
-            <!-- Left: Pricing cards -->
-            <div class="pricing-stack">
-
-                <!-- Subscribe card -->
-                <div class="p-card" id="card-sub">
-                    <div class="p-card-bar"></div>
-                    <div class="p-card-head">
-                        <div class="p-card-head-left">
-                            <div class="p-card-icon purple"><i class="fa-solid fa-crown"></i></div>
-                            <div>
-                                <div class="p-card-label">Disc-Tools Premium</div>
-                                <div class="p-card-sublabel">Monthly subscription</div>
-                            </div>
-                        </div>
-                        <div class="p-card-right">
-                            <div class="p-card-price">
-                                <div class="amount">€5</div>
-                                <div class="period">per month <span class="tax-note">excl. tax</span></div>
-                            </div>
-                            <i class="fa-solid fa-chevron-down p-card-chevron" id="chevron-sub"></i>
-                        </div>
+        <section class="premium-pricing" aria-labelledby="pricing-title">
+            <div class="wrap landing-section premium-columns">
+                <div class="section-intro">
+                    <h2 id="pricing-title">Premium options</h2>
+                    <p>Disc-Tools offers a recurring subscription, a single month or a gift for another Discord user.</p>
+                </div>
+                <dl class="premium-options">
+                    <div>
+                        <dt>Monthly subscription</dt>
+                        <dd class="option-price">€8.99 <small>/ month</small></dd>
+                        <dd class="option-note">Renews monthly until cancelled.</dd>
+                        <dd class="option-action"><button class="button button-primary" type="button" disabled aria-describedby="availability-title">Subscribe <span class="purchase-paused">Purchases paused</span></button></dd>
                     </div>
-                    <div class="p-card-body" id="body-sub">
-                        <div class="p-card-content">
-                            <ul class="feat-list">
-                                <li>
-                                    <span class="fi"><i class="fa-solid fa-shield-halved"></i></span>
-                                    Alt Account Detection - find linked accounts
-                                </li>
-                                <li>
-                                    <span class="fi"><i class="fa-solid fa-image"></i></span>
-                                    Premium Quote GIFs - no watermark, HD quality
-                                </li>
-                                <li>
-                                    <span class="fi"><i class="fa-solid fa-crown"></i></span>
-                                    Exclusive Premium Role on Discord server
-                                </li>
-                                <li>
-                                    <span class="fi"><i class="fa-solid fa-bolt"></i></span>
-                                    Early access to new features
-                                </li>
-                                <li class="muted">
-                                    <span class="fi"><i class="fa-solid fa-headset"></i></span>
-                                    Priority support - coming soon
-                                </li>
-                            </ul>
-                            <button class="btn-prem" id="btn-buy">
-                                Subscribe Now <i class="fa-solid fa-arrow-right"></i>
-                            </button>
-                            <p class="prem-fine">Cancel anytime - no strings attached.</p>
-                        </div>
+                    <div>
+                        <dt>One-time purchase</dt>
+                        <dd class="option-price">€8.99</dd>
+                        <dd class="option-note">One month of Premium with no automatic renewal.</dd>
+                        <dd class="option-action"><button class="button button-primary" type="button" disabled aria-describedby="availability-title">Buy one month <span class="purchase-paused">Purchases paused</span></button></dd>
                     </div>
-                </div>
-
-                <!-- One-time card -->
-                <div class="p-card" id="card-onetime">
-                    <div class="p-card-bar"></div>
-                    <div class="p-card-head">
-                        <div class="p-card-head-left">
-                            <div class="p-card-icon blue"><i class="fa-solid fa-bolt"></i></div>
-                            <div>
-                                <div class="p-card-label">1 Month Premium</div>
-                                <div class="p-card-sublabel">One-time purchase - no subscription</div>
-                            </div>
-                        </div>
-                        <div class="p-card-right">
-                            <div class="p-card-price">
-                                <div class="amount">€5</div>
-                                <div class="period">one-time <span class="tax-note">excl. tax</span></div>
-                            </div>
-                            <i class="fa-solid fa-chevron-down p-card-chevron" id="chevron-onetime"></i>
-                        </div>
+                    <div>
+                        <dt>Gift Premium</dt>
+                        <dd class="option-price">€8.99</dd>
+                        <dd class="option-note">One month of Premium for another Discord user.</dd>
+                        <dd class="option-action"><button class="button button-primary" type="button" disabled aria-describedby="availability-title">Gift Premium <span class="purchase-paused">Purchases paused</span></button></dd>
                     </div>
-                    <div class="p-card-body" id="body-onetime">
-                        <div class="p-card-content">
-                            <ul class="feat-list">
-                                <li>
-                                    <span class="fi"><i class="fa-solid fa-crown"></i></span>
-                                    All Premium features, no subscription
-                                </li>
-                                <li>
-                                    <span class="fi"><i class="fa-solid fa-clock"></i></span>
-                                    1 month, applied immediately
-                                </li>
-                                <li>
-                                    <span class="fi"><i class="fa-solid fa-layer-group"></i></span>
-                                    Stacks if already Premium
-                                </li>
-                                <li>
-                                    <span class="fi"><i class="fa-solid fa-ban"></i></span>
-                                    No recurring charges - pay once
-                                </li>
-                            </ul>
-                            <button class="btn-prem" id="btn-buy-onetime">
-                                Buy 1 Month <i class="fa-solid fa-arrow-right"></i>
-                            </button>
-                            <p class="prem-fine">One-time payment - no auto-renewal.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Gift card -->
-                <div class="p-card gift" id="card-gift">
-                    <div class="p-card-bar"></div>
-                    <div class="p-card-head">
-                        <div class="p-card-head-left">
-                            <div class="p-card-icon pink"><i class="fa-solid fa-gift"></i></div>
-                            <div>
-                                <div class="p-card-label">Gift Premium</div>
-                                <div class="p-card-sublabel">One-time gift - 1 month</div>
-                            </div>
-                        </div>
-                        <div class="p-card-right">
-                            <div class="p-card-price">
-                                <div class="amount">€4</div>
-                                <div class="period">one-time <span class="tax-note">excl. tax</span></div>
-                            </div>
-                            <i class="fa-solid fa-chevron-down p-card-chevron" id="chevron-gift"></i>
-                        </div>
-                    </div>
-                    <div class="p-card-body" id="body-gift">
-                        <div class="p-card-content">
-                            <ul class="feat-list">
-                                <li>
-                                    <span class="fi"><i class="fa-solid fa-shield-halved"></i></span>
-                                    All Premium features for the recipient
-                                </li>
-                                <li>
-                                    <span class="fi"><i class="fa-solid fa-user-plus"></i></span>
-                                    Recipient gets their Premium role
-                                </li>
-                                <li>
-                                    <span class="fi"><i class="fa-solid fa-clock"></i></span>
-                                    1 month, applied immediately
-                                </li>
-                                <li>
-                                    <span class="fi"><i class="fa-solid fa-layer-group"></i></span>
-                                    Stacks if already Premium
-                                </li>
-                            </ul>
-
-                            <hr class="gift-sep">
-                            <label class="gift-label" for="gift-recipient">Enter the recipient's Discord User ID to get started:</label>
-
-                            <div class="gift-input-row">
-                                    <input
-                                        class="gift-input"
-                                        id="gift-recipient"
-                                        type="text"
-                                        placeholder="Recipient Discord User ID"
-                                        maxlength="20"
-                                        autocomplete="off"
-                                    >
-                                <button class="btn-check" id="btn-check">
-                                    <i class="fa-solid fa-magnifying-glass"></i> Lookup
-                                </button>
-                            </div>
-
-                            <div class="gift-user-card" id="gift-user-card">
-                                <img id="gift-avatar" src="" alt="Avatar">
-                                <div class="guc-info">
-                                    <div class="guc-name" id="gift-name"></div>
-                                    <div class="guc-user" id="gift-username"></div>
-                                    <span class="guild-badge" id="gift-badge"></span>
-                                </div>
-                                <div class="guc-actions">
-                                    <button class="guc-cancel" id="btn-gift-cancel">Cancel</button>
-                                    <button class="guc-confirm" id="btn-confirm-gift">Pay &amp; Gift <i class="fa-solid fa-gift"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div><!-- /pricing-stack -->
-
-            <!-- Right: Sidebar -->
-            <div class="prem-sidebar">
-
-                <!-- What you get -->
-                <div class="sidebar-card">
-                    <h3>What's included</h3>
-                    <div class="perk-list">
-                        <div class="perk-item">
-                            <div class="pi-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                            <div class="pi-txt">
-                                <strong>Alt Detection</strong>
-                                <span>Find ban-evaders &amp; linked accounts instantly.</span>
-                            </div>
-                        </div>
-                        <div class="perk-item">
-                            <div class="pi-icon"><i class="fa-solid fa-image"></i></div>
-                            <div class="pi-txt">
-                                <strong>Premium GIFs</strong>
-                                <span>Watermark-free, HD quote animations.</span>
-                            </div>
-                        </div>
-                        <div class="perk-item">
-                            <div class="pi-icon"><i class="fa-solid fa-crown"></i></div>
-                            <div class="pi-txt">
-                                <strong>Premium Role</strong>
-                                <span>Exclusive recognition in our community.</span>
-                            </div>
-                        </div>
-                        <div class="perk-item">
-                            <div class="pi-icon"><i class="fa-solid fa-bolt"></i></div>
-                            <div class="pi-txt">
-                                <strong>Early Access</strong>
-                                <span>First to try every new feature we ship.</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Trust -->
-                <div class="sidebar-card">
-                    <h3>Why Premium?</h3>
-                    <div class="trust-list">
-                        <div class="trust-item">
-                            <i class="fa-solid fa-check-circle"></i>
-                            Cancel anytime, no lock-in
-                        </div>
-                        <div class="trust-item">
-                            <i class="fa-solid fa-check-circle"></i>
-                            Secure payment via Stripe
-                        </div>
-                        <div class="trust-item">
-                            <i class="fa-solid fa-check-circle"></i>
-                            Instant activation
-                        </div>
-                        <div class="trust-item">
-                            <i class="fa-solid fa-check-circle"></i>
-                            Supports ongoing development
-                        </div>
-                        <div class="trust-item">
-                            <i class="fa-solid fa-check-circle"></i>
-                            More perks coming regularly
-                        </div>
-                    </div>
-                </div>
-
-            </div><!-- /prem-sidebar -->
-        </div><!-- /prem-main -->
-
-        <!-- Free vs Premium comparison -->
-        <section class="compare-section">
-            <h2 class="compare-heading">Free vs <span class="grad">Premium</span></h2>
-            <div class="compare-grid">
-                <div class="compare-hd">
-                    <div class="compare-hd-feature"></div>
-                    <div class="compare-hd-col">Free</div>
-                    <div class="compare-hd-col compare-hd-prem">Premium</div>
-                </div>
-                <div class="compare-row">
-                    <div class="compare-feature">Alt Account Detection</div>
-                    <div class="compare-free"><i class="fa-solid fa-xmark"></i></div>
-                    <div class="compare-prem"><i class="fa-solid fa-check"></i> Full link analysis</div>
-                </div>
-                <div class="compare-row">
-                    <div class="compare-feature">Quote GIFs</div>
-                    <div class="compare-free">Watermark</div>
-                    <div class="compare-prem"><i class="fa-solid fa-check"></i> HD, no watermark</div>
-                </div>
-                <div class="compare-row">
-                    <div class="compare-feature">Exclusive Role</div>
-                    <div class="compare-free"><i class="fa-solid fa-xmark"></i></div>
-                    <div class="compare-prem"><i class="fa-solid fa-check"></i> Premium community role</div>
-                </div>
-                <div class="compare-row">
-                    <div class="compare-feature">Early Access</div>
-                    <div class="compare-free"><i class="fa-solid fa-xmark"></i></div>
-                    <div class="compare-prem"><i class="fa-solid fa-check"></i> New features first</div>
-                </div>
-                <div class="compare-row">
-                    <div class="compare-feature">Support</div>
-                    <div class="compare-free">Community</div>
-                    <div class="compare-prem"><i class="fa-solid fa-check"></i> Priority help</div>
-                </div>
+                </dl>
             </div>
         </section>
 
-        <!-- Bottom perks grid -->
-        <div class="prem-perks-bottom">
-            <h2>Everything you unlock</h2>
-            <div class="perks-grid">
-                <div class="pg-card">
-                    <div class="pg-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                    <h4>Alt Detection</h4>
-                    <p>Identify ban-evaders and linked alt accounts instantly.</p>
-                </div>
-                <div class="pg-card">
-                    <div class="pg-icon"><i class="fa-solid fa-image"></i></div>
-                    <h4>Premium GIFs</h4>
-                    <p>HD quality, no watermark, extra fonts and styles.</p>
-                </div>
-                <div class="pg-card">
-                    <div class="pg-icon"><i class="fa-solid fa-crown"></i></div>
-                    <h4>Premium Role</h4>
-                    <p>Exclusive role in the Disc-Tools Discord server.</p>
-                </div>
-                <div class="pg-card">
-                    <div class="pg-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                    <h4>Early Access</h4>
-                    <p>Be the first to try every new command and feature.</p>
-                </div>
+        <section class="wrap landing-section premium-columns" id="compare" aria-labelledby="compare-title">
+            <div class="section-intro">
+                <h2 id="compare-title">Free vs Premium</h2>
+                <p>Compare the limits and features available in the dashboard and Discord bot.</p>
             </div>
+            <table class="premium-comparison" aria-labelledby="compare-title">
+                <thead>
+                    <tr><th scope="col">Feature</th><th scope="col">Free</th><th scope="col">Premium</th></tr>
+                </thead>
+                <tbody>
+                    <tr><th scope="row">Server backups</th><td>1 backup</td><td>Up to 3 per server across 10 servers</td></tr>
+                    <tr><th scope="row">Quote GIFs</th><td>With watermark</td><td>HD, without watermark</td></tr>
+                    <tr><th scope="row">Alt account detection</th><td>Unavailable</td><td>Included</td></tr>
+                    <tr><th scope="row">Premium community role</th><td>Unavailable</td><td>Included</td></tr>
+                    <tr><th scope="row">Early access</th><td>Unavailable</td><td>Included</td></tr>
+                    <tr><th scope="row">Ads</th><td>Shown</td><td>Ad-free</td></tr>
+                    <tr><th scope="row">Support</th><td>Community support</td><td>Priority support</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="wrap landing-section premium-columns premium-faq" aria-labelledby="faq-title">
+            <div class="section-intro">
+                <h2 id="faq-title">Premium FAQ</h2>
+                <p><a href="https://discord.gg/rtRs8rhj5u">Ask in the support server</a> if you need help with an existing membership.</p>
+            </div>
+            <div class="faq-list">
+                <details>
+                    <summary>Does the pause affect my existing Premium membership?</summary>
+                    <p>Existing Premium memberships remain active. The pause applies to new purchases and gifts.</p>
+                </details>
+                <details>
+                    <summary>Where can I manage or cancel my subscription?</summary>
+                    <p>Open <a href="/profile/billing/manage/">Manage subscription</a> in the live dashboard. After cancellation, your access continues until the end of the paid billing period.</p>
+                </details>
+                <details>
+                    <summary>Does a one-time purchase renew?</summary>
+                    <p>A one-time purchase gives you one month of Premium. It ends after that month and does not renew automatically.</p>
+                </details>
+            </div>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <div class="wrap footer-inner">
+            <a class="brand" href="/"><img src="/static/assets/img/disc-tools.svg" width="26" height="26" alt="">Disc-Tools</a>
+            <nav class="footer-nav" aria-label="Footer navigation">
+                <div>
+                    <h2>Dashboard</h2>
+                    <ul>
+                        <li><a href="/my-servers/">My servers</a></li>
+                        <li><a href="/stats/">Statistics</a></li>
+                        <li><a href="/shop/">Shop</a></li>
+                        <li><a href="/#commands">Bot commands</a></li>
+                        <li><a href="/premium/">Premium</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Community</h2>
+                    <ul>
+                        <li><a href="https://disc-tools.de/partners/">Partner Program</a></li>
+                        <li><a href="https://discord.gg/rtRs8rhj5u">Support server</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Other Disc-Tools services</h2>
+                    <ul>
+                        <li><a href="https://developers.disc-tools.de/">Developers</a></li>
+                        <li><a href="https://disc-tools.de/">Disc-Tools</a></li>
+                        <li><a href="https://hosting.disc-tools.de/">Hosting</a></li>
+                        <li><a href="https://status.disc-tools.de/">Status</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Legal</h2>
+                    <ul>
+                        <li><a href="/legal/imprint/">Imprint</a></li>
+                        <li><a href="/legal/privacy-policy/">Privacy Policy</a></li>
+                        <li><a href="/legal/terms-of-service/">Terms of Service</a></li>
+                        <li><a href="/refund-policy/">Refund Policy</a></li>
+                    </ul>
+                </div>
+            </nav>
         </div>
-
-    </div><!-- /prem-page -->
-
-    <div class="toast" id="toast"><i class="fa-solid fa-circle-info"></i> <span id="toast-msg"></span></div>
-
-    <template-footer></template-footer>
-
-    <script src="/static/js/components.js?v=5"></script>
-    <script src="/static/js/cookie-banner.js?v=3"></script>
-    <script src="/static/js/auth.js?v=2"></script>
-    <script src="/static/js/premium.js?v=2"></script>
-    <script defer src="https://umami.disc-tools.de/script.js" data-website-id="71c24f0f-5dfe-41b7-a2ba-0585cba7946c"></script>
+    </footer>
 </body>
 </html>

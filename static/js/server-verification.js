@@ -1,28 +1,47 @@
 (function() {
+    const fetch = manageSettingsFetch;
     var path = window.location.pathname;
     var match = path.match(/^\/manage\/(\d+)\/verification\/?$/);
     var serverId = match ? match[1] : null;
     document.getElementById('server-sidebar-id').textContent = serverId || '-';
 
+    function escapeHtml(value) {
+        return String(value == null ? '' : value).replace(/[&<>"']/g, function(char) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char];
+        });
+    }
+
+    function makeInviteUrl(clientId) {
+        var params = new URLSearchParams({
+            client_id: /^[0-9]{17,20}$/.test(String(clientId || '')) ? String(clientId) : '1508899864602345582',
+            permissions: '8',
+            scope: 'bot',
+            guild_id: serverId || '',
+            disable_guild_select: 'true'
+        });
+        return 'https://discord.com/oauth2/authorize?' + params.toString();
+    }
+
     function showBotMissingPanel(serverName, serverIcon, clientId) {
-        var inviteUrl = 'https://discord.com/oauth2/authorize?client_id=' + (clientId || '1508899864602345582') + '&permissions=8&scope=bot&guild_id=' + serverId + '&disable_guild_select=true';
+        var inviteUrl = makeInviteUrl(clientId);
         document.getElementById('server-sidebar-name').textContent = serverName;
         document.getElementById('nav-overview').href = '/manage/' + serverId + '/overview';
         if (document.getElementById('nav-settings')) document.getElementById('nav-settings').href = '/manage/' + serverId + '/settings';
         if (document.getElementById('nav-verification')) document.getElementById('nav-verification').href = '/manage/' + serverId + '/verification';
         if (document.getElementById('nav-honeypot')) document.getElementById('nav-honeypot').href = '/manage/' + serverId + '/honeypot';
+        if (document.getElementById('nav-bump')) document.getElementById('nav-bump').href = '/manage/' + serverId + '/bump';
         if (serverIcon) {
             var isAnimated = serverIcon.startsWith('a_');
             var base = 'https://cdn.discordapp.com/icons/' + serverId + '/' + serverIcon;
-            document.getElementById('server-sidebar-icon').innerHTML = '<img src="' + base + '.' + (isAnimated ? 'gif' : 'png') + '" alt="' + serverName + '">';
+            document.getElementById('server-sidebar-icon').innerHTML = '<img src="' + escapeHtml(base) + '.' + (isAnimated ? 'gif' : 'png') + '" alt="' + escapeHtml(serverName) + '">';
         }
         var panel = document.querySelector('.profile-panel');
         if (panel) {
             panel.innerHTML = '<h2><i class="fa-solid fa-robot"></i> Server Management</h2>' +
-                '<p class="profile-panel-sub">The bot does not have the required permissions on <strong>' + (serverName || 'this server') + '</strong>.</p>' +
+                '<p class="profile-panel-sub">The bot does not have the required permissions on <strong>' + escapeHtml(serverName || 'this server') + '</strong>.</p>' +
                 '<div class="settings-card" style="text-align:center;padding:24px;">' +
                 '<p style="margin-bottom:16px;">Re-invite the bot with the required permissions.</p>' +
-                '<a class="btn-discord" href="' + inviteUrl + '" target="_blank"><i class="fa-brands fa-discord"></i> Update Bot</a>' +
+                '<a class="btn-discord" href="' + escapeHtml(inviteUrl) + '" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-discord"></i> Update Bot</a>' +
                 '</div>' +
                 '<p style="text-align:center;margin-top:16px;"><a href="/my-servers">← Back to My Servers</a></p>';
         }
@@ -232,8 +251,13 @@
                 verify_thumbnail: values.verify_thumbnail || null
             })
         })
-        .then(function(r) { return r.json(); })
-        .then(function() {
+        .then(function(r) { return r.json().then(function(data) { return { ok: r.ok, data: data }; }); })
+        .then(function(res) {
+            if (!res.ok) {
+                showToast(res.data && res.data.error ? res.data.error : 'Failed to save', 'error');
+                if (btnBar) btnBar.disabled = false;
+                return;
+            }
             showToast('Saved!', 'success');
             if (btnBar) btnBar.disabled = false;
             saved = {
@@ -290,6 +314,24 @@
         });
     }
 
+    function setPreviewImage(container, value) {
+        container.replaceChildren();
+        var url;
+        try {
+            url = new URL(value);
+        } catch (e) {
+            return false;
+        }
+        if (url.protocol !== 'https:' || url.username || url.password) return false;
+        var img = document.createElement('img');
+        img.src = url.href;
+        img.alt = '';
+        img.loading = 'lazy';
+        img.referrerPolicy = 'no-referrer';
+        container.appendChild(img);
+        return true;
+    }
+
     window.updatePreview = function() {
         var title = getVal('setting-verify-title') || 'Verify your account';
         var body = getVal('setting-verify-body') || 'Click the button below to verify your account and gain access to the server.';
@@ -297,27 +339,15 @@
         var image = getVal('setting-verify-image');
         var thumb = getVal('setting-verify-thumbnail');
 
-        document.querySelector('.embed-preview').style.borderLeftColor = color;
+        document.querySelector('.embed-preview').style.borderLeftColor = /^#[0-9a-f]{6}$/i.test(color) ? color : '#9b59b6';
         document.getElementById('preview-title').textContent = title;
         document.getElementById('preview-body').textContent = body;
 
         var thumbEl = document.getElementById('preview-thumb');
-        if (thumb) {
-            thumbEl.style.display = 'block';
-            thumbEl.innerHTML = '<img src="' + thumb + '" alt="">';
-        } else {
-            thumbEl.style.display = 'none';
-            thumbEl.innerHTML = '';
-        }
+        thumbEl.style.display = setPreviewImage(thumbEl, thumb) ? 'block' : 'none';
 
         var imgEl = document.getElementById('preview-image');
-        if (image) {
-            imgEl.style.display = 'block';
-            imgEl.innerHTML = '<img src="' + image + '" alt="">';
-        } else {
-            imgEl.style.display = 'none';
-            imgEl.innerHTML = '';
-        }
+        imgEl.style.display = setPreviewImage(imgEl, image) ? 'block' : 'none';
     };
 
     window.uploadImage = function(type) {
@@ -402,9 +432,9 @@
     checkAuth().then(function(auth) {
         if (!auth.authenticated) return;
 
-        fetch('/api/servers', { credentials: 'include' })
-            .then(function(r) { return r.json(); })
+        fetchServersWithRetry(serverId)
             .then(function(data) {
+                if (!data) return;
                 var server = null;
                 var botServers = data.botServers || [];
                 for (var i = 0; i < botServers.length; i++) {
@@ -419,7 +449,7 @@
                     if (foundSrv) {
                         showBotMissingPanel(foundSrv.name, foundSrv.icon, data.clientId);
                     } else {
-                        window.location.replace('/blocked/no-access');
+                        window.location.replace('/my-servers/');
                     }
                     return;
                 }
@@ -435,15 +465,17 @@
                 document.getElementById('nav-verification').href = '/manage/' + serverId + '/verification';
                 var nh = document.getElementById('nav-honeypot');
                 if (nh) nh.href = '/manage/' + serverId + '/honeypot';
+                var nb = document.getElementById('nav-bump');
+                if (nb) nb.href = '/manage/' + serverId + '/bump';
 
                 if (server.icon) {
                     var isAnimated = server.icon.startsWith('a_');
                     var base = 'https://cdn.discordapp.com/icons/' + serverId + '/' + server.icon;
-                    document.getElementById('server-sidebar-icon').innerHTML = '<img src="' + base + '.' + (isAnimated ? 'gif' : 'png') + '" alt="' + server.name + '">';
+                    document.getElementById('server-sidebar-icon').innerHTML = '<img src="' + escapeHtml(base) + '.' + (isAnimated ? 'gif' : 'png') + '" alt="' + escapeHtml(server.name) + '">';
                 }
 
                 loadSettings();
-            });
+            }).catch(showServerListError);
     });
 })();
 
@@ -458,13 +490,4 @@
     if (btnImage && fileImage) btnImage.addEventListener('click', function() { fileImage.click(); });
     if (btnThumb && fileThumb) btnThumb.addEventListener('click', function() { fileThumb.click(); });
     if (btnResend) btnResend.addEventListener('click', resendEmbed);
-})();
-
-(function() {
-    var sidebarLabels = document.querySelectorAll('.profile-sidebar-section-label');
-    for (var i = 0; i < sidebarLabels.length; i++) {
-        sidebarLabels[i].addEventListener('click', function() {
-            this.parentElement.classList.toggle('collapsed');
-        });
-    }
 })();

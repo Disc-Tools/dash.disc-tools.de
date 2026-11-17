@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111014">
+    <title>403 · Access restricted | Disc-Tools</title>
+    <link rel="icon" href="/static/assets/img/disc-tools.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://dash.disc-tools.de" crossorigin>
+    <link rel="preload" href="/static/fonts/SpaceGrotesk/SpaceGrotesk.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/static/css/dashboard.css?v=launch-20261117">
+    <link rel="stylesheet" href="/static/css/pages.css?v=launch-20261117">
+    <script src="/static/js/dashboard-session.js?v=launch-20261117" defer></script>
+    <script src="/static/js/dashboard.js?v=launch-20261117" defer></script>
+</head>
+<body class="public-page">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+        <div class="wrap header-inner">
+            <a class="brand" href="/" aria-label="Disc-Tools home">
+                <img src="/static/assets/img/disc-tools.svg" width="32" height="32" alt="">
+                Disc-Tools
+            </a>
+            <button class="menu-toggle" type="button" aria-controls="navigation" aria-expanded="false" hidden>Menu</button>
+            <nav id="navigation" aria-label="Main navigation">
+                <a href="/#features">Features</a>
+                <a href="/#commands">Commands</a>
+                <a href="/premium/">Premium</a>
+                <a href="https://discord.gg/rtRs8rhj5u">Support</a>
+                <a class="button button-outline" id="dashboard-sign-in" href="https://dash.disc-tools.de/api/auth/login">Sign in with Discord</a>
+                <details class="account-menu" id="dashboard-account" hidden>
+                    <summary class="button button-outline">
+                        <img class="account-avatar" width="26" height="26" alt="">
+                        <span class="account-name"></span>
+                        <span class="account-chevron" aria-hidden="true"></span>
+                    </summary>
+                    <div class="account-actions">
+                        <a href="/my-servers/">My servers</a>
+                        <a href="/profile/">Account</a>
+                        <button type="button" id="dashboard-logout">Logout</button>
+                        <p class="account-error" role="status" hidden></p>
+                    </div>
+                </details>
+            </nav>
+        </div>
+    </header>
+    <main class="wrap public-main" id="main">
+        <section class="state-page">
+            <h1 id="state-title">Access restricted</h1>
+            <p id="state-message" role="status">You do not have permission to open this page.</p>
+            <div class="actions"><a class="button button-primary" href="/">Back to homepage</a></div>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <div class="wrap footer-inner">
+            <a class="brand" href="/"><img src="/static/assets/img/disc-tools.svg" width="26" height="26" alt="">Disc-Tools</a>
+            <nav class="footer-nav" aria-label="Footer navigation">
+                <div>
+                    <h2>Dashboard</h2>
+                    <ul>
+                        <li><a href="/my-servers/">My servers</a></li>
+                        <li><a href="/stats/">Statistics</a></li>
+                        <li><a href="/shop/">Shop</a></li>
+                        <li><a href="/#commands">Bot commands</a></li>
+                        <li><a href="/premium/">Premium</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Community</h2>
+                    <ul>
+                        <li><a href="https://disc-tools.de/partners/">Partner Program</a></li>
+                        <li><a href="https://discord.gg/rtRs8rhj5u">Support server</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Other Disc-Tools services</h2>
+                    <ul>
+                        <li><a href="https://developers.disc-tools.de/">Developers</a></li>
+                        <li><a href="https://disc-tools.de/">Disc-Tools</a></li>
+                        <li><a href="https://hosting.disc-tools.de/">Hosting</a></li>
+                        <li><a href="https://status.disc-tools.de/">Status</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Legal</h2>
+                    <ul>
+                        <li><a href="/legal/imprint/">Imprint</a></li>
+                        <li><a href="/legal/privacy-policy/">Privacy Policy</a></li>
+                        <li><a href="/legal/terms-of-service/">Terms of Service</a></li>
+                        <li><a href="/refund-policy/">Refund Policy</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </footer>
+</body>
+</html>

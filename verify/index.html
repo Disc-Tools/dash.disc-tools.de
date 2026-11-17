@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111014">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Server verification | Disc-Tools</title>
+    <link rel="icon" href="/static/assets/img/disc-tools.svg" type="image/svg+xml">
+    <link rel="preload" href="/static/fonts/SpaceGrotesk/SpaceGrotesk.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/static/css/dashboard.css?v=launch-20261117">
+    <link rel="stylesheet" href="/static/css/verify.css?v=launch-20261117">
+    <script src="/static/js/verify.js?v=launch-20261117" defer></script>
+</head>
+<body>
+    <main class="verify-shell">
+        <a class="brand" href="/"><img src="/static/assets/img/disc-tools.svg" width="32" height="32" alt="">Disc-Tools</a>
+        <section class="verify-card" aria-labelledby="verify-title">
+            <div class="verify-server" id="verify-server" hidden>
+                <span class="verify-icon" aria-hidden="true"></span>
+                <span id="verify-name"></span>
+            </div>
+            <h1 id="verify-title">Server verification</h1>
+            <p class="verify-status" id="verify-status" role="status">Loading server details…</p>
+            <form id="verify-form" hidden>
+                <div class="verify-check">
+                    <input type="checkbox" id="verify-terms" required>
+                    <label for="verify-terms">I accept the <a href="/legal/terms-of-service/" target="_blank" rel="noopener">Terms of Service</a>.</label>
+                </div>
+                <div class="verify-check">
+                    <input type="checkbox" id="verify-privacy" required>
+                    <label for="verify-privacy">I accept the <a href="/legal/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a>.</label>
+                </div>
+                <button class="button button-primary" id="verify-button" type="submit" disabled>Verify with Discord</button>
+                <p class="verify-note">Discord will ask you to confirm your account. You must already be a member of this server.</p>
+            </form>
+            <button class="button button-outline" id="verify-retry" type="button" hidden>Try again</button>
+        </section>
+        <a class="verify-support" href="https://discord.gg/rtRs8rhj5u">Need help? Contact support</a>
+    </main>
+</body>
+</html>

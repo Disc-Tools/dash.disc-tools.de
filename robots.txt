@@ -1,11 +1,9 @@
 User-agent: *
-Allow: /
+Disallow: /api/
 Disallow: /manage/
 Disallow: /profile/
-Disallow: /my-servers
-Disallow: /blocked/
+Disallow: /verify/
 Disallow: /success/
-Disallow: /404
-Disallow: /api/
-
+Disallow: /blocked/
+Disallow: /premium/success/
 Sitemap: https://dash.disc-tools.de/sitemap.xml

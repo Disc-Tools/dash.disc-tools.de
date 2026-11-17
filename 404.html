@@ -1,60 +1,97 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 – Page Not Found | Disc-Tools</title>
-    <meta property="og:title" content="Disc-Tools">
-    <meta property="og:description" content="Discord utilities - alt account detection, quote GIFs, and more.">
-    <meta property="og:image" content="https://dash.disc-tools.de/static/assets/img/icon.png">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary">
-    <meta name="robots" content="noindex">
-    <link rel="stylesheet" href="/static/css/main.css">
-    <link rel="stylesheet" href="/static/css/404.css">
-    <link rel="stylesheet" href="/static/icons/css/all.min.css">
-    <link rel="icon" type="image/png" href="/static/assets/img/icon.png">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111014">
+    <title>Page not found | Disc-Tools</title>
+    <link rel="icon" href="/static/assets/img/disc-tools.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://dash.disc-tools.de" crossorigin>
+    <link rel="preload" href="/static/fonts/SpaceGrotesk/SpaceGrotesk.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/static/css/dashboard.css?v=launch-20261117">
+    <link rel="stylesheet" href="/static/css/pages.css?v=launch-20261117">
+    <script src="/static/js/dashboard-session.js?v=launch-20261117" defer></script>
+    <script src="/static/js/dashboard.js?v=launch-20261117" defer></script>
 </head>
-<body>
-
-    <main class="err-page">
-        <div class="err-card">
-
-            <span class="err-number">404</span>
-
-            <div class="err-icon-wrap">
-                <i class="fa-solid fa-map-location-dot"></i>
-            </div>
-
-            <h1>Lost in space</h1>
-            <p>This page doesn't exist or may have been moved. Let's get you back somewhere familiar.</p>
-
-            <div class="err-btns">
-                <a href="/" class="btn-home"><i class="fa-solid fa-house"></i> Back to Dashboard</a>
-                <button class="btn-back">
-                    <i class="fa-solid fa-arrow-left"></i> Go Back
-                </button>
-            </div>
-
-            <div class="err-divider"></div>
-
-            <nav class="err-quick" aria-label="Quick links">
-                <a href="/servers" class="err-ql"><i class="fa-solid fa-server"></i> Servers</a>
-                <a href="/premium" class="err-ql"><i class="fa-solid fa-crown"></i> Premium</a>
-                <a href="/invite" class="err-ql"><i class="fa-solid fa-plus"></i> Invite Bot</a>
-                <a href="https://discord.gg/rtRs8rhj5u" class="err-ql" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i> Support</a>
+<body class="public-page">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+        <div class="wrap header-inner">
+            <a class="brand" href="/" aria-label="Disc-Tools home">
+                <img src="/static/assets/img/disc-tools.svg" width="32" height="32" alt="">
+                Disc-Tools
+            </a>
+            <button class="menu-toggle" type="button" aria-controls="navigation" aria-expanded="false" hidden>Menu</button>
+            <nav id="navigation" aria-label="Main navigation">
+                <a href="/#features">Features</a>
+                <a href="/#commands">Commands</a>
+                <a href="/premium/">Premium</a>
+                <a href="https://discord.gg/rtRs8rhj5u">Support</a>
+                <a class="button button-outline" id="dashboard-sign-in" href="https://dash.disc-tools.de/api/auth/login">Sign in with Discord</a>
+                <details class="account-menu" id="dashboard-account" hidden>
+                    <summary class="button button-outline">
+                        <img class="account-avatar" width="26" height="26" alt="">
+                        <span class="account-name"></span>
+                        <span class="account-chevron" aria-hidden="true"></span>
+                    </summary>
+                    <div class="account-actions">
+                        <a href="/my-servers/">My servers</a>
+                        <a href="/profile/">Account</a>
+                        <button type="button" id="dashboard-logout">Logout</button>
+                        <p class="account-error" role="status" hidden></p>
+                    </div>
+                </details>
             </nav>
-
         </div>
+    </header>
+    <main class="wrap public-main" id="main">
+        <section class="state-page">
+            <h1 id="state-title">Page not found</h1>
+            <p id="state-message" role="status">This page may have moved, or the address may be incorrect.</p>
+            <div class="actions"><a class="button button-primary" href="/">Back to homepage</a></div>
+        </section>
     </main>
-
-    <footer class="err-footer">
-        <span>&copy; <span id="year"></span> Disc-Tools &middot; <a href="/legal/imprint">Imprint</a> &middot; <a href="/legal/privacy-policy">Privacy</a></span>
+    <footer class="site-footer">
+        <div class="wrap footer-inner">
+            <a class="brand" href="/"><img src="/static/assets/img/disc-tools.svg" width="26" height="26" alt="">Disc-Tools</a>
+            <nav class="footer-nav" aria-label="Footer navigation">
+                <div>
+                    <h2>Dashboard</h2>
+                    <ul>
+                        <li><a href="/my-servers/">My servers</a></li>
+                        <li><a href="/stats/">Statistics</a></li>
+                        <li><a href="/shop/">Shop</a></li>
+                        <li><a href="/#commands">Bot commands</a></li>
+                        <li><a href="/premium/">Premium</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Community</h2>
+                    <ul>
+                        <li><a href="https://disc-tools.de/partners/">Partner Program</a></li>
+                        <li><a href="https://discord.gg/rtRs8rhj5u">Support server</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Other Disc-Tools services</h2>
+                    <ul>
+                        <li><a href="https://developers.disc-tools.de/">Developers</a></li>
+                        <li><a href="https://disc-tools.de/">Disc-Tools</a></li>
+                        <li><a href="https://hosting.disc-tools.de/">Hosting</a></li>
+                        <li><a href="https://status.disc-tools.de/">Status</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Legal</h2>
+                    <ul>
+                        <li><a href="/legal/imprint/">Imprint</a></li>
+                        <li><a href="/legal/privacy-policy/">Privacy Policy</a></li>
+                        <li><a href="/legal/terms-of-service/">Terms of Service</a></li>
+                        <li><a href="/refund-policy/">Refund Policy</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
     </footer>
-
-    <script src="/static/js/cookie-banner.js?v=3"></script>
-    <script src="/static/js/auth.js?v=2"></script>
-    <script src="/static/js/404.js?v=1"></script>
-    <script defer src="https://umami.disc-tools.de/script.js" data-website-id="71c24f0f-5dfe-41b7-a2ba-0585cba7946c"></script>
 </body>
 </html>

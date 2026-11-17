@@ -1,150 +1,100 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invite Disc-Tools Bot - Add Free Discord Tools to Your Server</title>
-    <meta name="description" content="Invite the Disc-Tools bot to your Discord server - get 11 free tools including Avatar CDN, Snowflake Decoder, Embed Builder, and more. One-click setup, no configuration needed.">
-    <meta property="og:title" content="Invite Disc-Tools Bot - Add Free Tools to Your Server">
-    <meta property="og:description" content="Add the Disc-Tools bot to your Discord server - 11 free utilities including avatar CDN, snowflake decoder, embed builder, and more.">
-    <meta property="og:image" content="https://dash.disc-tools.de/static/assets/img/icon.png">
-    <meta property="og:url" content="https://dash.disc-tools.de/invite/">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary">
-    <link rel="canonical" href="https://dash.disc-tools.de/invite/">
-    <link rel="stylesheet" href="/static/css/main.css">
-    <link rel="stylesheet" href="/static/css/invite.css">
-    <link rel="stylesheet" href="/static/icons/css/all.min.css">
-    <link rel="icon" type="image/png" href="/static/assets/img/icon.png">
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://dash.disc-tools.de"},
-            {"@type": "ListItem", "position": 2, "name": "Invite Bot", "item": "https://dash.disc-tools.de/invite"}
-        ]
-    }
-    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111014">
+    <title>Add Disc-Tools | Disc-Tools</title>
+    <link rel="icon" href="/static/assets/img/disc-tools.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://dash.disc-tools.de" crossorigin>
+    <link rel="preload" href="/static/fonts/SpaceGrotesk/SpaceGrotesk.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/static/css/dashboard.css?v=launch-20261117">
+    <link rel="stylesheet" href="/static/css/pages.css?v=launch-20261117">
+    <script src="/static/js/dashboard-session.js?v=launch-20261117" defer></script>
+    <script src="/static/js/dashboard.js?v=launch-20261117" defer></script>
+    <script src="/static/js/invite.js?v=launch-20261117" defer></script>
 </head>
-<body>
-    <header>
-        <div class="header-inner">
-            <a href="/" class="header-left link-reset">
-                <div class="header-logo">
-                    <img src="/static/assets/img/icon.png" alt="Disc-Tools">
-                </div>
-                <span class="header-title">Disc<span class="accent">-</span>Tools</span>
+<body class="public-page">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+        <div class="wrap header-inner">
+            <a class="brand" href="/" aria-label="Disc-Tools home">
+                <img src="/static/assets/img/disc-tools.svg" width="32" height="32" alt="">
+                Disc-Tools
             </a>
-            <nav class="header-nav">
-                <a href="/" class="nav-link">Home</a>
-                <a href="/premium" class="nav-link">Premium</a>
-                <a href="/stats" class="nav-link">Stats</a>
+            <button class="menu-toggle" type="button" aria-controls="navigation" aria-expanded="false" hidden>Menu</button>
+            <nav id="navigation" aria-label="Main navigation">
+                <a href="/#features">Features</a>
+                <a href="/#commands">Commands</a>
+                <a href="/premium/">Premium</a>
+                <a href="https://discord.gg/rtRs8rhj5u">Support</a>
+                <a class="button button-outline" id="dashboard-sign-in" href="https://dash.disc-tools.de/api/auth/login">Sign in with Discord</a>
+                <details class="account-menu" id="dashboard-account" hidden>
+                    <summary class="button button-outline">
+                        <img class="account-avatar" width="26" height="26" alt="">
+                        <span class="account-name"></span>
+                        <span class="account-chevron" aria-hidden="true"></span>
+                    </summary>
+                    <div class="account-actions">
+                        <a href="/my-servers/">My servers</a>
+                        <a href="/profile/">Account</a>
+                        <button type="button" id="dashboard-logout">Logout</button>
+                        <p class="account-error" role="status" hidden></p>
+                    </div>
+                </details>
             </nav>
-            <div class="header-right" id="header-right">
-                <div class="header-loader"></div>
-            </div>
         </div>
     </header>
-
-    <main class="invite-container">
-        <div id="state-login" class="state state-active">
-            <div class="invite-card text-center">
-                <i class="fa-solid fa-lock invite-lock-icon"></i>
-                <h2>Login required</h2>
-                <p class="sub">Sign in with Discord to see your servers and invite the bot.</p>
-                <a class="btn-discord" href="/api/auth/login">
-                    <i class="fa-brands fa-discord"></i> Login with Discord
-                </a>
-            </div>
-        </div>
-
-        <div id="state-loading" class="state">
-            <div class="invite-card text-center">
-                <div class="spinner"></div>
-                <h2>Loading servers…</h2>
-                <p class="sub">Fetching your Discord servers.</p>
-            </div>
-        </div>
-
-        <div id="state-error" class="state">
-            <div class="invite-card text-center">
-                <i class="fa-solid fa-triangle-exclamation invite-error-icon"></i>
-                <h2>Something went wrong</h2>
-                <p class="sub" id="error-text">Could not load your servers. Please try logging in again.</p>
-                <a class="btn-discord" href="/api/auth/login">
-                    <i class="fa-brands fa-discord"></i> Login again
-                </a>
-            </div>
-        </div>
-
-        <div id="state-servers" class="state">
-            <div class="invite-card">
-                <h2><i class="fa-solid fa-server"></i> Your Servers</h2>
-                <p class="sub" id="server-count">-</p>
-                <div id="server-list"></div>
-            </div>
-        </div>
+    <main class="wrap public-main" id="main">
+        <header class="page-intro"><h1>Add Disc-Tools<br><em>to your server.</em></h1><p>Choose your server in Discord and authorize the bot. You need the Manage Server permission.</p></header>
+        <div class="actions"><a id="invite-bot" class="button button-primary" href="https://discord.com/oauth2/authorize?client_id=1508899864602345582&amp;scope=bot&amp;permissions=8">Add to Discord ↗</a><a class="button button-outline" href="/my-servers/">Choose from My servers</a></div>
+        <section class="page-section"><h2>Before you start</h2>
+            <ol class="page-steps"><li><strong>Choose your server</strong><p>Sign in to the Discord account that manages the server you want to add Disc-Tools to.</p></li>
+            <li><strong>Review permissions</strong><p>The existing bot invite requests Administrator access. Discord shows the permissions before you authorize it.</p></li>
+            <li><strong>Open the dashboard</strong><p>Return to My servers to configure verification, logs and bump reminders. Put the bot’s role above the roles it needs to assign.</p></li></ol>
+        </section>
     </main>
-
     <footer class="site-footer">
-        <div class="footer-inner">
-            <div class="footer-brand">
-                <div class="footer-brand-row">
-                    <div class="footer-brand-logo"><img src="/static/assets/img/icon.png" alt="Disc-Tools"></div>
-                    <span class="footer-brand-name">Disc<span class="accent">-</span>Tools</span>
+        <div class="wrap footer-inner">
+            <a class="brand" href="/"><img src="/static/assets/img/disc-tools.svg" width="26" height="26" alt="">Disc-Tools</a>
+            <nav class="footer-nav" aria-label="Footer navigation">
+                <div>
+                    <h2>Dashboard</h2>
+                    <ul>
+                        <li><a href="/my-servers/">My servers</a></li>
+                        <li><a href="/stats/">Statistics</a></li>
+                        <li><a href="/shop/">Shop</a></li>
+                        <li><a href="/#commands">Bot commands</a></li>
+                        <li><a href="/premium/">Premium</a></li>
+                    </ul>
                 </div>
-                <div class="footer-brand-slogan">Professional Discord Utilities</div>
-            </div>
-            <div class="footer-col">
-                <h3>Product</h3>
-                <a href="/">Dashboard</a>
-                <a href="/invite">Invite Bot</a>
-                <a href="/premium">Premium</a>
-            </div>
-            <div class="footer-col">
-                <h3>Socials</h3>
-                <a href="https://discord.gg/rtRs8rhj5u">Discord</a>
-                <a href="https://disc-tools.de">Website</a>
-                <a href="https://top.gg/bot/1508899864602345582">Top.gg</a>
-            </div>
-            <div class="footer-col">
-                <h3>Contact</h3>
-                <a href="https://discord.gg/rtRs8rhj5u">Support Server</a>
-                <a href="/invite">Invite Bot</a>
-            </div>
-            <div class="footer-col">
-                <h3>Legal</h3>
-                <a href="/legal/imprint">Imprint</a>
-                <a href="/legal/privacy-policy">Privacy Policy</a>
-                <a href="/legal/terms-of-service">Terms of Service</a>
-                <a href="/legal/refund-policy">Refund Policy</a>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            &copy; <span id="year"></span> Disc-Tools. All rights reserved.
+                <div>
+                    <h2>Community</h2>
+                    <ul>
+                        <li><a href="https://disc-tools.de/partners/">Partner Program</a></li>
+                        <li><a href="https://discord.gg/rtRs8rhj5u">Support server</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Other Disc-Tools services</h2>
+                    <ul>
+                        <li><a href="https://developers.disc-tools.de/">Developers</a></li>
+                        <li><a href="https://disc-tools.de/">Disc-Tools</a></li>
+                        <li><a href="https://hosting.disc-tools.de/">Hosting</a></li>
+                        <li><a href="https://status.disc-tools.de/">Status</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Legal</h2>
+                    <ul>
+                        <li><a href="/legal/imprint/">Imprint</a></li>
+                        <li><a href="/legal/privacy-policy/">Privacy Policy</a></li>
+                        <li><a href="/legal/terms-of-service/">Terms of Service</a></li>
+                        <li><a href="/refund-policy/">Refund Policy</a></li>
+                    </ul>
+                </div>
+            </nav>
         </div>
     </footer>
-
-    <div class="cookie-banner" id="cookie-banner">
-        <div class="cookie-header">
-            <i class="fa-solid fa-cookie cookie-icon"></i>
-            <span class="cookie-title">Cookie Consent</span>
-        </div>
-        <div class="cookie-text">
-            This site uses cookies for essential functionality and analytics.
-            <a href="/legal/privacy-policy">Learn more</a>
-        </div>
-        <div class="cookie-btns">
-            <button class="cookie-btn cookie-btn-ghost" data-action="reject">Reject all</button>
-            <button class="cookie-btn cookie-btn-secondary" data-action="essential">Only essential</button>
-            <button class="cookie-btn cookie-btn-primary" data-action="accept">Accept all</button>
-        </div>
-    </div>
-
-    <script src="/static/js/cookie-banner.js?v=3"></script>
-    <script src="/static/js/auth.js?v=2"></script>
-    <script src="/static/js/invite.js?v=2"></script>
-    <script defer src="https://umami.disc-tools.de/script.js" data-website-id="71c24f0f-5dfe-41b7-a2ba-0585cba7946c"></script>
 </body>
 </html>

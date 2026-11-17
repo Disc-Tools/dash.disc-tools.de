@@ -1,28 +1,47 @@
 (function() {
+    const fetch = manageSettingsFetch;
     var path = window.location.pathname;
     var match = path.match(/^\/manage\/(\d+)\/honeypot\/?$/);
     var serverId = match ? match[1] : null;
     document.getElementById('server-sidebar-id').textContent = serverId || '-';
 
+    function escapeHtml(value) {
+        return String(value == null ? '' : value).replace(/[&<>"']/g, function(char) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char];
+        });
+    }
+
+    function makeInviteUrl(clientId) {
+        var params = new URLSearchParams({
+            client_id: /^[0-9]{17,20}$/.test(String(clientId || '')) ? String(clientId) : '1508899864602345582',
+            permissions: '8',
+            scope: 'bot',
+            guild_id: serverId || '',
+            disable_guild_select: 'true'
+        });
+        return 'https://discord.com/oauth2/authorize?' + params.toString();
+    }
+
     function showBotMissingPanel(serverName, serverIcon, clientId) {
-        var inviteUrl = 'https://discord.com/oauth2/authorize?client_id=' + (clientId || '1508899864602345582') + '&permissions=8&scope=bot&guild_id=' + serverId + '&disable_guild_select=true';
+        var inviteUrl = makeInviteUrl(clientId);
         document.getElementById('server-sidebar-name').textContent = serverName;
         document.getElementById('nav-overview').href = '/manage/' + serverId + '/overview';
         if (document.getElementById('nav-settings')) document.getElementById('nav-settings').href = '/manage/' + serverId + '/settings';
         if (document.getElementById('nav-verification')) document.getElementById('nav-verification').href = '/manage/' + serverId + '/verification';
         if (document.getElementById('nav-honeypot')) document.getElementById('nav-honeypot').href = '/manage/' + serverId + '/honeypot';
+        if (document.getElementById('nav-bump')) document.getElementById('nav-bump').href = '/manage/' + serverId + '/bump';
         if (serverIcon) {
             var isAnimated = serverIcon.startsWith('a_');
             var base = 'https://cdn.discordapp.com/icons/' + serverId + '/' + serverIcon;
-            document.getElementById('server-sidebar-icon').innerHTML = '<img src="' + base + '.' + (isAnimated ? 'gif' : 'png') + '" alt="' + serverName + '">';
+            document.getElementById('server-sidebar-icon').innerHTML = '<img src="' + escapeHtml(base) + '.' + (isAnimated ? 'gif' : 'png') + '" alt="' + escapeHtml(serverName) + '">';
         }
         var panel = document.querySelector('.profile-panel');
         if (panel) {
             panel.innerHTML = '<h2><i class="fa-solid fa-robot"></i> Server Management</h2>' +
-                '<p class="profile-panel-sub">The bot does not have the required permissions on <strong>' + (serverName || 'this server') + '</strong>.</p>' +
+                '<p class="profile-panel-sub">The bot does not have the required permissions on <strong>' + escapeHtml(serverName || 'this server') + '</strong>.</p>' +
                 '<div class="settings-card" style="text-align:center;padding:24px;">' +
                 '<p style="margin-bottom:16px;">Re-invite the bot with the required permissions.</p>' +
-                '<a class="btn-discord" href="' + inviteUrl + '" target="_blank"><i class="fa-brands fa-discord"></i> Update Bot</a>' +
+                '<a class="btn-discord" href="' + escapeHtml(inviteUrl) + '" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-discord"></i> Update Bot</a>' +
                 '</div>' +
                 '<p style="text-align:center;margin-top:16px;"><a href="/my-servers">← Back to My Servers</a></p>';
         }
@@ -248,9 +267,9 @@
     checkAuth().then(function(auth) {
         if (!auth.authenticated) return;
 
-        fetch('/api/servers', { credentials: 'include' })
-            .then(function(r) { return r.json(); })
+        fetchServersWithRetry(serverId)
             .then(function(data) {
+                if (!data) return;
                 var server = null;
                 var botServers = data.botServers || [];
                 for (var i = 0; i < botServers.length; i++) {
@@ -265,7 +284,7 @@
                     if (foundSrv) {
                         showBotMissingPanel(foundSrv.name, foundSrv.icon, data.clientId);
                     } else {
-                        window.location.replace('/blocked/no-access');
+                        window.location.replace('/my-servers/');
                     }
                     return;
                 }
@@ -280,23 +299,15 @@
                 document.getElementById('nav-settings').href = '/manage/' + serverId + '/settings';
                 document.getElementById('nav-verification').href = '/manage/' + serverId + '/verification';
                 document.getElementById('nav-honeypot').href = '/manage/' + serverId + '/honeypot';
+                document.getElementById('nav-bump').href = '/manage/' + serverId + '/bump';
 
                 if (server.icon) {
                     var isAnimated = server.icon.startsWith('a_');
                     var base = 'https://cdn.discordapp.com/icons/' + serverId + '/' + server.icon;
-                    document.getElementById('server-sidebar-icon').innerHTML = '<img src="' + base + '.' + (isAnimated ? 'gif' : 'png') + '" alt="' + server.name + '">';
+                    document.getElementById('server-sidebar-icon').innerHTML = '<img src="' + escapeHtml(base) + '.' + (isAnimated ? 'gif' : 'png') + '" alt="' + escapeHtml(server.name) + '">';
                 }
 
                 loadSettings();
-            });
+            }).catch(showServerListError);
     });
-})();
-
-(function() {
-    var sidebarLabels = document.querySelectorAll('.profile-sidebar-section-label');
-    for (var i = 0; i < sidebarLabels.length; i++) {
-        sidebarLabels[i].addEventListener('click', function() {
-            this.parentElement.classList.toggle('collapsed');
-        });
-    }
 })();

@@ -1,290 +1,268 @@
-(function() {
-    var path = window.location.pathname;
-    var match = path.match(/^\/manage\/(\d+)\/overview\/?$/);
-    var serverId = match ? match[1] : null;
-    document.getElementById('server-sidebar-id').textContent = serverId || '-';
+const serverId = window.location.pathname.match(/^\/manage\/(\d{17,20})\/overview\/?$/)?.[1];
+const manageSignInUrl = new URL('/api/auth/login?return=dashboard-my-servers', dashboardOrigin);
+const overview = document.getElementById('manage-overview');
+const manageStatus = document.getElementById('manage-status');
+const manageStatusText = document.getElementById('manage-status-text');
+const manageActions = document.getElementById('manage-status-actions');
+const identity = document.getElementById('manage-identity');
+const manageNavigation = document.getElementById('manage-navigation');
+const manageSidebar = document.querySelector('.manage-sidebar');
+const manageSettings = document.getElementById('manage-settings');
+const sidebarMenu = document.querySelector('.manage-sidebar-toggle');
+const sidebarBody = document.getElementById('manage-sidebar-body');
+const compactSidebar = window.matchMedia('(max-width: 740px)');
+const growthSummary = document.getElementById('growth-summary');
+const growthChart = document.getElementById('growth-chart');
+const growthDetails = document.getElementById('growth-details');
+const periodButtons = document.querySelectorAll('.growth-periods button');
+const numbers = new Intl.NumberFormat(document.documentElement.lang);
+const dates = new Intl.DateTimeFormat(document.documentElement.lang, { month: 'short', day: 'numeric', timeZone: 'UTC' });
+const dayMs = 86_400_000;
+const svgNamespace = 'http://www.w3.org/2000/svg';
+let memberHistory;
+let growthDays = 7;
 
-    function showBotMissingPanel(serverName, serverIcon, clientId) {
-        var inviteUrl = 'https://discord.com/oauth2/authorize?client_id=' + (clientId || '1508899864602345582') + '&permissions=8&scope=bot&guild_id=' + serverId + '&disable_guild_select=true';
-        document.getElementById('server-sidebar-name').textContent = serverName;
-        document.getElementById('nav-overview').href = '/manage/' + serverId + '/overview';
-        if (document.getElementById('nav-settings')) document.getElementById('nav-settings').href = '/manage/' + serverId + '/settings';
-        if (document.getElementById('nav-verification')) document.getElementById('nav-verification').href = '/manage/' + serverId + '/verification';
-        if (document.getElementById('nav-honeypot')) document.getElementById('nav-honeypot').href = '/manage/' + serverId + '/honeypot';
-        if (serverIcon) {
-            var isAnimated = serverIcon.startsWith('a_');
-            var base = 'https://cdn.discordapp.com/icons/' + serverId + '/' + serverIcon;
-            document.getElementById('server-sidebar-icon').innerHTML = '<img src="' + base + '.' + (isAnimated ? 'gif' : 'png') + '" alt="' + serverName + '">';
-        }
-        var panel = document.querySelector('.profile-panel');
-        if (panel) {
-            panel.innerHTML = '<h2><i class="fa-solid fa-robot"></i> Server Management</h2>' +
-                '<p class="profile-panel-sub">The bot does not have the required permissions on <strong>' + (serverName || 'this server') + '</strong>.</p>' +
-                '<div class="settings-card" style="text-align:center;padding:24px;">' +
-                '<p style="margin-bottom:16px;">Re-invite the bot with the required permissions.</p>' +
-                '<a class="btn-discord" href="' + inviteUrl + '" target="_blank"><i class="fa-brands fa-discord"></i> Update Bot</a>' +
-                '</div>' +
-                '<p style="text-align:center;margin-top:16px;"><a href="/my-servers">← Back to My Servers</a></p>';
-        }
+function setSidebarOpen(open) {
+    sidebarMenu.setAttribute('aria-expanded', String(open));
+    sidebarBody.toggleAttribute('data-open', open);
+}
+
+sidebarMenu.addEventListener('click', () => {
+    setSidebarOpen(sidebarMenu.getAttribute('aria-expanded') === 'false');
+});
+
+compactSidebar.addEventListener('change', () => {
+    if (compactSidebar.matches && sidebarBody.contains(document.activeElement)) sidebarMenu.focus();
+    setSidebarOpen(false);
+});
+
+manageSidebar.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && compactSidebar.matches && sidebarBody.hasAttribute('data-open')) {
+        setSidebarOpen(false);
+        sidebarMenu.focus();
+    }
+});
+
+manageNavigation.querySelector('[aria-current="page"]').addEventListener('click', () => {
+    if (compactSidebar.matches) setSidebarOpen(false);
+});
+
+function setManageStatus(text, action) {
+    manageStatus.hidden = false;
+    manageStatusText.textContent = text;
+    manageActions.replaceChildren();
+    if (action) {
+        const link = document.createElement('a');
+        link.className = 'button button-outline';
+        link.href = action.url;
+        link.textContent = action.label;
+        manageActions.append(link);
+    }
+}
+
+function renderServerIdentity(server) {
+    const iconContainer = identity.querySelector('.manage-icon');
+    iconContainer.textContent = [...server.name.trim()][0]?.toLocaleUpperCase() || '•';
+    if (/^(?:a_)?[a-f0-9]{32}$/.test(server.icon || '')) {
+        const image = document.createElement('img');
+        image.width = image.height = 44;
+        image.alt = '';
+        image.addEventListener('load', () => iconContainer.replaceChildren(image), { once: true });
+        image.src = `https://cdn.discordapp.com/icons/${serverId}/${server.icon}.webp?size=64`;
+    }
+    document.getElementById('manage-server-name').textContent = server.name;
+    document.getElementById('manage-server-id').textContent = serverId;
+    document.title = `${server.name} · Overview | Disc-Tools`;
+    identity.hidden = false;
+    sidebarMenu.hidden = false;
+}
+
+function chartElement(name, attributes) {
+    const element = document.createElementNS(svgNamespace, name);
+    for (const [key, value] of Object.entries(attributes)) element.setAttribute(key, value);
+    return element;
+}
+
+function renderGrowth() {
+    if (!memberHistory) return;
+
+    const end = Date.parse(new Date().toISOString().slice(0, 10));
+    const start = end - dayMs * (growthDays - 1);
+    const points = memberHistory.filter(point => point.date >= start && point.date <= end);
+    growthChart.hidden = points.length === 0;
+    growthDetails.hidden = points.length === 0;
+    if (!points.length) {
+        growthSummary.textContent = 'No member snapshots in this period yet.';
+        return;
     }
 
-    function fmt(n) {
-        return typeof n === 'number' ? n.toLocaleString() : '-';
+    const first = points[0];
+    const last = points.at(-1);
+    const change = last.count - first.count;
+    growthSummary.textContent = points.length === 1
+        ? `${numbers.format(last.count)} members in the only recorded snapshot.`
+        : `${numbers.format(last.count)} members at the latest snapshot · ${change > 0 ? '+' : ''}${numbers.format(change)} over the recorded period`;
+
+    const max = Math.max(100, Math.ceil(Math.max(...points.map(point => point.count)) / 100) * 100);
+    // Keep labels readable on larger servers while retaining round hundred values.
+    const step = Math.ceil(max / 600) * 100;
+    const ticks = [max];
+    for (let value = Math.floor((max - 1) / step) * step; value >= 0; value -= step) {
+        if (value === 0 || max - value >= step / 2) ticks.push(value);
     }
 
-    function drawChart(history) {
-        var svg = document.getElementById('growth-svg');
-        var tooltip = document.getElementById('growth-tooltip');
-        if (!svg || !history || !history.length) return;
-
-        var W = 800, H = 360, PAD_LEFT = 44, PAD_RIGHT = 16, PAD_TOP = 16, PAD_BOT = 32;
-        var color = '#9b59b6';
-
-        var maxVal = 1;
-        history.forEach(function(d) { maxVal = Math.max(maxVal, d.member_count || 0); });
-        var mag = Math.pow(10, Math.floor(Math.log10(maxVal)));
-        var nice = Math.ceil(maxVal / mag) * mag;
-        if (nice > 0 && nice < maxVal * 1.2) nice = Math.ceil(maxVal / (mag / 2)) * (mag / 2);
-        maxVal = nice || maxVal;
-
-        function x(i) { return PAD_LEFT + (i / Math.max(history.length - 1, 1)) * (W - PAD_LEFT - PAD_RIGHT); }
-        function y(v) { return H - PAD_BOT - (v / maxVal) * (H - PAD_TOP - PAD_BOT); }
-
-        var pathD = '';
-        var pointsHtml = '';
-        history.forEach(function(d, i) {
-            var v = d.member_count || 0;
-            var px = x(i), py = y(v);
-            var cmd = (i === 0 ? 'M' : 'L') + ' ' + px.toFixed(1) + ' ' + py.toFixed(1);
-            pathD += cmd;
-            pointsHtml += '<g class="chart-point-group">' +
-                '<circle class="chart-dot-hit" cx="' + px.toFixed(1) + '" cy="' + py.toFixed(1) + '" r="14" fill="transparent" data-idx="' + i + '"/>' +
-                '<circle class="chart-dot" cx="' + px.toFixed(1) + '" cy="' + py.toFixed(1) + '" r="3" fill="' + color + '" opacity="0.9"/>' +
-                '</g>';
-        });
-
-        var areaD = pathD + ' L ' + x(history.length - 1).toFixed(1) + ' ' + y(0) + ' L ' + x(0).toFixed(1) + ' ' + y(0) + ' Z';
-        var areaHtml = '<path d="' + areaD + '" fill="url(#growthGrad)" opacity="0.25"/>';
-        var gradHtml = '<defs><linearGradient id="growthGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="' + color + '"/><stop offset="100%" stop-color="' + color + '" stop-opacity="0"/></linearGradient></defs>';
-
-        var gridHtml = '';
-        for (var g = 0; g <= 4; g++) {
-            var gy = H - PAD_BOT - (g / 4) * (H - PAD_TOP - PAD_BOT);
-            var labelVal = Math.round((g / 4) * maxVal);
-            gridHtml += '<line x1="' + PAD_LEFT + '" y1="' + gy.toFixed(1) + '" x2="' + (W - PAD_RIGHT) + '" y2="' + gy.toFixed(1) + '" stroke="#1e1e22" stroke-width="1"/>';
-            gridHtml += '<text x="' + (PAD_LEFT - 8) + '" y="' + (gy + 4).toFixed(1) + '" text-anchor="end" fill="#52525b" font-size="9" font-family="Inter,sans-serif">' + fmt(labelVal) + '</text>';
-        }
-
-        // X-axis labels inside SVG
-        var labelHtml = '';
-        var skipStep = Math.max(1, Math.floor(history.length / 6));
-        history.forEach(function(d, i) {
-            if (history.length > 6 && i % skipStep !== 0 && i !== history.length - 1) return;
-            var cx = x(i);
-            var date = new Date(d.date);
-            var lbl = date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
-            labelHtml += '<text x="' + cx.toFixed(1) + '" y="' + (H - 6).toFixed(1) + '" text-anchor="middle" fill="#52525b" font-size="9" font-family="Inter,sans-serif">' + lbl + '</text>';
-        });
-
-        var columnsHtml = '';
-        history.forEach(function(d, i) {
-            var cx = x(i);
-            var colW = (W - PAD_LEFT - PAD_RIGHT) / Math.max(history.length - 1, 1);
-            columnsHtml += '<rect class="chart-column" x="' + (cx - colW / 2).toFixed(1) + '" y="' + PAD_TOP + '" width="' + colW.toFixed(1) + '" height="' + (H - PAD_TOP - PAD_BOT).toFixed(1) + '" fill="transparent" data-idx="' + i + '"/>';
-        });
-
-        svg.innerHTML = gradHtml + gridHtml + areaHtml + '<path d="' + pathD + '" fill="none" stroke="' + color + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>' + columnsHtml + pointsHtml + labelHtml;
-
-        // Tooltip
-        var columns = svg.querySelectorAll('.chart-column');
-        columns.forEach(function(col, idx) {
-            if (idx >= history.length) return;
-            col.addEventListener('mouseenter', function() {
-                var d = history[idx];
-                var date = new Date(d.date);
-                var lbl = date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
-                tooltip.innerHTML = '<div style="font-weight:600;margin-bottom:2px">' + lbl + '</div>' + fmt(d.member_count || 0) + ' members';
-                tooltip.hidden = false;
-            });
-            col.addEventListener('mousemove', function(e) {
-                var rect = svg.getBoundingClientRect();
-                tooltip.style.left = ((e.clientX - rect.left) / rect.width * 100) + '%';
-                tooltip.style.top = ((e.clientY - rect.top) / rect.height * 100) + '%';
-            });
-            col.addEventListener('mouseleave', function() { tooltip.hidden = true; });
-        });
-    }
-
-    function loadGrowthChart(days) {
-        document.getElementById('btn-3d').classList.toggle('active', days === 3);
-        document.getElementById('btn-7d').classList.toggle('active', days === 7);
-        document.getElementById('btn-30d').classList.toggle('active', days === 30);
-
-        var fetchDays = days * 2;
-        fetch('/api/guilds/' + serverId + '/stats?days=' + fetchDays, { credentials: 'include' })
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                var history = data.history || [];
-                var lookup = {};
-                history.forEach(function(d) { lookup[d.date.split('T')[0]] = d; });
-
-                var filled = [];
-                var today = new Date();
-                for (var i = fetchDays - 1; i >= 0; i--) {
-                    var d = new Date(today);
-                    d.setDate(d.getDate() - i);
-                    var key = d.toISOString().split('T')[0];
-                    if (lookup[key]) {
-                        filled.push(lookup[key]);
-                    } else {
-                        filled.push({ date: key, member_count: 0 });
-                    }
-                }
-
-                var prevFilled = filled.slice(0, days);
-                var currFilled = filled.slice(days);
-                drawChart(currFilled);
-
-                var firstReal = null;
-                var lastReal = null;
-                for (var hi = 0; hi < prevFilled.length; hi++) {
-                    if (prevFilled[hi].member_count > 0) { firstReal = prevFilled[hi].member_count; break; }
-                }
-                for (var hi = prevFilled.length - 1; hi >= 0; hi--) {
-                    if (prevFilled[hi].member_count > 0) { lastReal = prevFilled[hi].member_count; break; }
-                }
-
-                var change;
-                var pct;
-                var cls;
-                var pctEl = document.getElementById('growth-pct');
-                var changeEl = document.getElementById('growth-change');
-
-                if (firstReal && lastReal && firstReal > 0) {
-                    change = lastReal - firstReal;
-                    pct = (change / firstReal * 100).toFixed(1);
-                    cls = change > 0 ? 'up' : change < 0 ? 'down' : '';
-                    if (pctEl) {
-                        pctEl.textContent = (pct >= 0 ? '+' : '') + pct + '%';
-                        pctEl.className = 'chart-stat-value ' + cls;
-                    }
-                    if (changeEl) {
-                        changeEl.textContent = (change >= 0 ? '+' : '') + fmt(change);
-                        changeEl.className = 'chart-stat-value ' + cls;
-                    }
-                } else {
-                    if (pctEl) { pctEl.textContent = '\u2014'; pctEl.className = 'chart-stat-value'; }
-                    if (changeEl) { changeEl.textContent = '\u2014'; changeEl.className = 'chart-stat-value'; }
-                }
-
-                var peak = 0;
-                for (var hi = 0; hi < currFilled.length; hi++) {
-                    var v = currFilled[hi].member_count;
-                    if (v > peak) peak = v;
-                }
-                var peakEl = document.getElementById('growth-peak');
-                if (peakEl) peakEl.textContent = fmt(peak);
-
-                var botsEl = document.getElementById('growth-bots');
-                if (botsEl) botsEl.textContent = fmt(data.botCount);
-            })
-            .catch(function() {});
-    }
-
-    document.getElementById('btn-3d').addEventListener('click', function() { loadGrowthChart(3); });
-    document.getElementById('btn-7d').addEventListener('click', function() { loadGrowthChart(7); });
-    document.getElementById('btn-30d').addEventListener('click', function() { loadGrowthChart(30); });
-
-    var closeBtn = document.getElementById('btn-role-warning-close');
-    if (closeBtn) {
-        closeBtn.addEventListener('click', function() {
-            var modal = document.getElementById('role-warning-modal');
-            if (modal) modal.hidden = true;
-        });
-    }
-
-    function checkRoleHierarchy(botPos, roles, settings) {
-        var verRoleId = (settings && settings.verified_role) || '';
-        var unvRoleId = (settings && settings.unverified_role) || '';
-        var show = false;
-        [verRoleId, unvRoleId].forEach(function(rid) {
-            if (!rid) return;
-            var role = roles.find(function(r) { return r.id === rid; });
-            if (role && role.position >= botPos) show = true;
-        });
-        var modal = document.getElementById('role-warning-modal');
-        if (modal) modal.hidden = !show;
-    }
-
-    function loadRoleHierarchy() {
-        fetch('/api/guilds/' + serverId + '/settings', { credentials: 'include' })
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                checkRoleHierarchy(data.botRolePosition || 0, data.roles || [], data.settings || {});
-            })
-            .catch(function() {});
-    }
-
-    var sidebarLabels = document.querySelectorAll('.profile-sidebar-section-label');
-    for (var i = 0; i < sidebarLabels.length; i++) {
-        sidebarLabels[i].addEventListener('click', function() {
-            this.parentElement.classList.toggle('collapsed');
-        });
-    }
-
-    checkAuth().then(function(auth) {
-        if (!auth.authenticated) return;
-
-        fetch('/api/servers', { credentials: 'include' })
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                var server = null;
-                var botServers = data.botServers || [];
-                for (var i = 0; i < botServers.length; i++) {
-                    if (String(botServers[i].id) === serverId) { server = botServers[i]; break; }
-                }
-                if (!server) {
-                    var otherServers = data.servers || [];
-                    var foundSrv = null;
-                    for (var j = 0; j < otherServers.length; j++) {
-                        if (String(otherServers[j].id) === serverId) { foundSrv = otherServers[j]; break; }
-                    }
-                    if (foundSrv) {
-                        showBotMissingPanel(foundSrv.name, foundSrv.icon, data.clientId);
-                    } else {
-                        window.location.replace('/blocked/no-access');
-                    }
-                    return;
-                }
-                if (server.missingPermissions) {
-                    showBotMissingPanel(server.name, server.icon, data.clientId);
-                    return;
-                }
-                document.getElementById('server-sidebar-name').textContent = server.name;
-                document.getElementById('server-sub').textContent = 'Manage ' + server.name;
-                document.querySelector('title').textContent = server.name + ' – Disc-Tools';
-                document.getElementById('nav-overview').href = '/manage/' + serverId + '/overview';
-                var ns = document.getElementById('nav-settings');
-                if (ns) ns.href = '/manage/' + serverId + '/settings';
-                var nv = document.getElementById('nav-verification');
-                if (nv) nv.href = '/manage/' + serverId + '/verification';
-                var nh = document.getElementById('nav-honeypot');
-                if (nh) nh.href = '/manage/' + serverId + '/honeypot';
-
-                document.getElementById('stat-members').textContent = fmt(server.memberCount);
-                document.getElementById('stat-roles').textContent = fmt(server.roleCount);
-                document.getElementById('stat-boosts').textContent = fmt(server.boostCount);
-                document.getElementById('stat-online').textContent = fmt(server.onlineCount);
-
-                loadGrowthChart(7);
-
-                loadRoleHierarchy();
-
-                if (server.icon) {
-                    var isAnimated = server.icon.startsWith('a_');
-                    var base = 'https://cdn.discordapp.com/icons/' + serverId + '/' + server.icon;
-                    document.getElementById('server-sidebar-icon').innerHTML = '<img src="' + base + '.' + (isAnimated ? 'gif' : 'png') + '" alt="' + server.name + '">';
-                }
-            });
+    const chartY = count => 150 - (count / max) * 140;
+    const coords = points.map(point => ({
+        x: 5 + ((point.date - start) / (end - start)) * 590,
+        y: chartY(point.count)
+    }));
+    const svg = growthChart.querySelector('svg');
+    const guideLines = ticks.map(count => chartElement('line', {
+        x1: 0, x2: 600, y1: chartY(count), y2: chartY(count),
+        stroke: 'var(--border)', 'vector-effect': 'non-scaling-stroke'
+    }));
+    const line = chartElement('polyline', {
+        points: coords.map(point => `${point.x},${point.y}`).join(' '),
+        fill: 'none',
+        stroke: 'var(--accent-light)',
+        'stroke-width': 2,
+        'vector-effect': 'non-scaling-stroke'
     });
-})();
+    svg.replaceChildren(...guideLines, line);
+
+    growthChart.querySelector('.growth-points').replaceChildren(...coords.map(({ x, y }, index) => {
+        const dot = document.createElement('span');
+        dot.className = 'growth-point';
+        dot.style.left = `${x / 6}%`;
+        dot.style.top = `${y / 1.6}%`;
+        const point = points[index];
+        dot.title = `${dates.format(point.date)} · ${numbers.format(point.count)} members`;
+        return dot;
+    }));
+
+    const scale = growthChart.querySelector('.growth-scale');
+    const labels = growthChart.querySelector('.growth-dates');
+    scale.replaceChildren(...ticks.map(value => {
+        const span = document.createElement('span');
+        span.style.setProperty('--tick-y', `${chartY(value) / 1.6}%`);
+        span.textContent = numbers.format(value);
+        return span;
+    }));
+    labels.replaceChildren(...[start, end].map(date => {
+        const span = document.createElement('span');
+        span.textContent = dates.format(date);
+        return span;
+    }));
+
+    growthDetails.querySelector('tbody').replaceChildren(...points.map(point => {
+        const row = document.createElement('tr');
+        row.insertCell().textContent = dates.format(point.date);
+        row.insertCell().textContent = numbers.format(point.count);
+        return row;
+    }));
+}
+
+function setHistory(rows) {
+    if (!Array.isArray(rows)) {
+        growthSummary.textContent = 'Member history is unavailable.';
+        return;
+    }
+
+    memberHistory = rows.filter(row => row?.member_count != null).map(row => ({
+        date: Date.parse(String(row.date).slice(0, 10)),
+        count: Number(row.member_count)
+    })).filter(point => Number.isFinite(point.date) && Number.isInteger(point.count) && point.count >= 0)
+        .sort((a, b) => a.date - b.date);
+    renderGrowth();
+}
+
+for (const button of periodButtons) {
+    button.addEventListener('click', () => {
+        growthDays = Number(button.dataset.days);
+        for (const option of periodButtons) option.setAttribute('aria-pressed', String(option === button));
+        renderGrowth();
+    });
+}
+
+async function loadOverview() {
+    if (!serverId) {
+        setManageStatus('Invalid server ID.');
+        return;
+    }
+
+    const [serverResult, statsResult] = await Promise.allSettled([
+        dashboardSession('/api/servers'),
+        dashboardSession(`/api/guilds/${serverId}/stats?days=30`)
+    ]);
+    if (serverResult.status === 'rejected') throw serverResult.reason;
+    const response = serverResult.value;
+    if (!response.ok) throw new Error('Server overview unavailable');
+    const data = await response.json();
+    if (data.authenticated === false || data.error === 'no_access_token') {
+        setManageStatus('Sign in with Discord to manage this server.', {
+            url: manageSignInUrl,
+            label: 'Sign in with Discord'
+        });
+        return;
+    }
+    if (data.error || !Array.isArray(data.botServers) || !Array.isArray(data.servers)) {
+        throw new Error('Invalid server list');
+    }
+
+    const installed = data.botServers.find(server => server.id === serverId);
+    const server = installed || data.servers.find(server => server.id === serverId);
+    if (!server) {
+        setManageStatus('You need the Manage Server permission to view this server.', { url: '/my-servers/', label: 'My servers' });
+        return;
+    }
+
+    if (!installed || server.missingPermissions) {
+        renderServerIdentity(server);
+        manageStatus.setAttribute('data-warning', '');
+        setManageStatus(installed ? 'Bot permissions need attention.' : 'Disc-Tools is not installed on this server.', {
+            url: discordBotInvite(serverId, data.clientId, requiredBotPermissions),
+            label: installed ? 'Fix permissions' : 'Add Disc-Tools'
+        });
+        return;
+    }
+
+    if (statsResult.status === 'rejected') throw statsResult.reason;
+    const statsResponse = statsResult.value;
+    if (statsResponse.status === 403) {
+        setManageStatus('Only the server owner or a member with the configured manager role can open this overview.', {
+            url: '/my-servers/', label: 'My servers'
+        });
+        return;
+    }
+    if (statsResponse.status === 401) {
+        setManageStatus('Your Discord session has expired.', {
+            url: manageSignInUrl,
+            label: 'Sign in with Discord'
+        });
+        return;
+    }
+    if (!statsResponse.ok) throw new Error('Server statistics unavailable');
+
+    const stats = await statsResponse.json();
+    renderServerIdentity(server);
+    for (const link of manageSidebar.querySelectorAll('[data-panel]')) {
+        link.href = `/manage/${serverId}/${link.dataset.panel}`;
+    }
+    manageNavigation.hidden = false;
+    manageSettings.hidden = false;
+
+    const statistics = { members: stats.memberCount ?? server.memberCount, online: server.onlineCount, roles: server.roleCount, boosts: server.boostCount };
+    for (const [key, value] of Object.entries(statistics)) {
+        if (Number.isFinite(value)) document.getElementById(`stat-${key}`).textContent = numbers.format(value);
+    }
+    manageStatus.hidden = true;
+    overview.hidden = false;
+    setHistory(stats.history);
+}
+
+loadOverview().catch(() => {
+    setManageStatus('The server overview could not be loaded. Reload the page or open the live dashboard.', {
+        url: new URL(`/manage/${serverId}/overview`, dashboardOrigin),
+        label: 'Open live overview'
+    });
+});

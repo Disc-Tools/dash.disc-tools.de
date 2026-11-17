@@ -1,6 +1,43 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta http-equiv="refresh" content="0;url=/profile/general/overview"><title>Redirecting…</title></head>
-<body><p>Redirecting to <a href="/profile/general/overview">/profile/general/overview</a>…</p>    <script defer src="https://umami.disc-tools.de/script.js" data-website-id="71c24f0f-5dfe-41b7-a2ba-0585cba7946c"></script>
-</body>
-</html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111014">
+    <title>Account overview | Disc-Tools</title>
+    <link rel="icon" href="/static/assets/img/disc-tools.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://dash.disc-tools.de" crossorigin>
+    <link rel="preload" href="/static/fonts/SpaceGrotesk/SpaceGrotesk.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/static/css/dashboard.css?v=launch-20261117">
+    <link rel="stylesheet" href="/static/css/server-overview.css?v=launch-20261117">
+    <script src="/static/js/dashboard-session.js?v=launch-20261117" defer></script>
+    <link rel="stylesheet" href="/static/css/account.css?v=launch-20261117">
+    <script src="/static/js/account.js?v=launch-20261117" defer></script>
+</head>
+<body class="manage-page">
+<a class="skip-link" href="#main">Skip to content</a><aside class="manage-sidebar" aria-label="Account navigation">
+<div class="manage-sidebar-top"><button type="button" class="manage-sidebar-toggle button button-outline" aria-controls="account-nav" aria-expanded="false">Account menu</button></div>
+<div id="account-nav" class="manage-sidebar-body">
+<div class="account-identity" id="account-identity" hidden><img width="44" height="44" alt=""><div><strong></strong><small></small></div></div>
+<nav class="manage-nav" aria-label="Account"><a href="/profile/general/overview/" aria-current="page">Overview</a>
+<a href="/profile/security/sessions/">Sessions</a>
+<a href="/profile/billing/">Billing</a>
+<a href="/profile/billing/premium-history/">Premium history</a>
+<a href="/profile/billing/manage/">Manage subscription</a>
+</nav>
+</div>
+<div class="manage-sidebar-actions"><a class="button button-outline" href="/profile/settings/">Settings</a><button class="button button-outline" id="account-logout" type="button" hidden>Logout</button><a class="button button-outline" href="/my-servers/">← Back to my servers</a></div>
+</aside>
+<main class="manage-main" id="main" tabindex="-1"><div class="manage-content">
+<h1>Account overview</h1><div id="account-status" class="manage-status" role="status">Loading your account…</div>
+<div id="account-content" hidden><dl class="account-facts">
+<div><dt>Display name</dt><dd id="account-display"></dd></div>
+<div><dt>Discord username</dt><dd id="account-username"></dd></div>
+<div><dt>Discord user ID</dt><dd id="account-id"></dd></div>
+<div><dt>Email</dt><dd id="account-email"></dd></div>
+<div><dt>Discord account created</dt><dd id="account-created"></dd></div>
+<div><dt>Premium</dt><dd id="account-premium">Loading…</dd></div>
+<div><dt>Servers with Disc-Tools</dt><dd id="account-servers">Loading…</dd></div>
+<div><dt>Joined Disc-Tools community</dt><dd id="account-community">Loading…</dd></div>
+</dl></div></div></main>
+</body></html>

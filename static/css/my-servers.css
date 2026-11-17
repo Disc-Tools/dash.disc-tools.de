@@ -1,0 +1,84 @@
+.servers-page { min-height: 100vh; display: flex; flex-direction: column; }
+
+.servers-main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: minmax(200px, 290px) minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(28px, 5vw, 76px);
+    padding-block: clamp(36px, 7vw, 88px);
+}
+
+.servers-sidebar { min-width: 0; }
+.servers-heading { border-top: 2px solid var(--accent); padding-top: 18px; }
+.servers-heading h1 { font-size: clamp(2.5rem, 4.7vw, 3.75rem); letter-spacing: -.055em; }
+.servers-heading p { max-width: 30ch; margin-top: 12px; color: var(--muted); font-size: .9375rem; }
+
+.servers-controls { display: grid; gap: 8px; margin-top: 26px; }
+.servers-controls label { font-size: .875rem; font-weight: 650; }
+.servers-controls input { width: 100%; min-width: 0; min-height: 44px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text); font: inherit; }
+.servers-controls input:focus-visible { outline: 2px solid var(--accent-light); outline-offset: 2px; }
+#server-results { color: var(--muted); font-size: .8125rem; }
+
+.servers-content { min-width: 0; }
+.servers-status { padding: 22px 20px; border: 1px solid var(--border); background: var(--panel); color: var(--muted); }
+.servers-status p { margin-bottom: 12px; }
+.servers-status p:last-child { margin-bottom: 0; }
+
+.server-group + .server-group { margin-top: 28px; }
+.server-group h2 { padding: 14px 16px; border-block: 1px solid var(--border); background: var(--panel); font-size: 1.125rem; }
+.server-list { margin: 0; padding: 0; list-style: none; }
+.server-row { display: grid; grid-template-columns: 42px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 11px 16px; border-bottom: 1px solid var(--border); }
+.server-row:hover, .server-row:focus-within { background: var(--panel); }
+.server-icon { width: 42px; height: 42px; display: grid; place-items: center; overflow: hidden; border-radius: 8px; background: var(--panel); color: var(--accent-light); font-weight: 700; }
+.server-icon img { grid-area: 1 / 1; }
+.servers-status.is-loading { padding: 0; border: 0; background: transparent; }
+.servers-loading-label { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skeleton-heading { display: flex; align-items: center; min-height: 48px; padding-inline: 16px; border-block: 1px solid var(--border); background: var(--panel); }
+.skeleton-heading span { width: 130px; height: 12px; }
+.skeleton-row { min-height: 67px; }
+.skeleton-row:hover { background: transparent; }
+.skeleton-icon { width: 42px; height: 42px; }
+.skeleton-label { display: grid; gap: 8px; }
+.skeleton-label span { width: min(48%, 190px); height: 12px; }
+.skeleton-label span + span { width: min(34%, 125px); height: 8px; }
+.skeleton-action { width: clamp(48px, 12vw, 74px); height: 34px; }
+.skeleton-heading span, .skeleton-icon, .skeleton-label span, .skeleton-action { border-radius: 5px; background: #312b38; }
+
+@media (prefers-reduced-motion: no-preference) {
+    .skeleton-heading span, .skeleton-icon, .skeleton-label span, .skeleton-action { animation: servers-loading 1.5s ease-in-out infinite alternate; }
+}
+
+@keyframes servers-loading {
+    from { opacity: .55; }
+    to { opacity: 1; }
+}
+
+@media (scripting: none) {
+    .servers-status.is-loading { display: none; }
+}
+
+.server-title, .server-meta { display: block; overflow-wrap: anywhere; }
+.server-meta { color: var(--muted); font-size: .75rem; }
+.server-meta-warning {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 5px;
+    max-width: 100%;
+    margin-top: 3px;
+    padding: 1px 6px;
+    border: 1px solid #70512a;
+    border-radius: 4px;
+    background: #2f2415;
+    color: #ffcf80;
+    font-weight: 600;
+}
+
+.server-action-warning { border-color: #70512a; color: #ffcf80; text-align: center; }
+.server-action-warning:hover { border-color: #ffcf80; background: #2f2415; color: #ffcf80; }
+
+@media (max-width: 740px) {
+    .servers-main { grid-template-columns: 1fr; }
+    .servers-heading p { max-width: none; }
+    .server-row { gap: 9px; padding-inline: 8px; }
+}

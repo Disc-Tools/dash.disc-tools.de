@@ -1,43 +1,97 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Access Restricted – Disc-Tools</title>
-<meta property="og:title" content="Disc-Tools">
-<meta property="og:description" content="Discord utilities - alt account detection, quote GIFs, and more.">
-<meta property="og:image" content="https://dash.disc-tools.de/static/assets/img/icon.png">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
-<meta name="robots" content="noindex">
-<link rel="stylesheet" href="/static/css/main.css">
-<link rel="stylesheet" href="/static/css/blocked.css">
-<link rel="stylesheet" href="/static/css/blocked-vpn.css">
-<link rel="stylesheet" href="/static/icons/css/all.min.css">
-<link rel="icon" type="image/png" href="/static/assets/img/icon.png">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111014">
+    <title>Connection restricted | Disc-Tools</title>
+    <link rel="icon" href="/static/assets/img/disc-tools.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://dash.disc-tools.de" crossorigin>
+    <link rel="preload" href="/static/fonts/SpaceGrotesk/SpaceGrotesk.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/static/css/dashboard.css?v=launch-20261117">
+    <link rel="stylesheet" href="/static/css/pages.css?v=launch-20261117">
+    <script src="/static/js/dashboard-session.js?v=launch-20261117" defer></script>
+    <script src="/static/js/dashboard.js?v=launch-20261117" defer></script>
 </head>
-<body>
-<div class="blocked-card">
-<div class="blocked-card-icon"><i class="fa-solid fa-shield-halved"></i></div>
-<h1>Access Restricted</h1>
-<p>Our security system detected a VPN, Proxy, or Hosting connection. Access is restricted for these connection types.</p>
-
-<div class="vpn-details" id="vpn-details">
-<div class="vpn-row"><span class="vpn-label">IP Address</span><span class="vpn-value" id="det-ip">-</span></div>
-<div class="vpn-row"><span class="vpn-label">Type</span><span class="vpn-value" id="det-type">-</span></div>
-<div class="vpn-row"><span class="vpn-label">Provider</span><span class="vpn-value" id="det-provider">-</span></div>
-<div class="vpn-row"><span class="vpn-label">ASN</span><span class="vpn-value" id="det-asn">-</span></div>
-</div>
-
-<a href="/" class="blocked-btn">Retry Connection</a>
-
-<div class="blocked-divider">or</div>
-
-<a href="/api/auth/login" class="blocked-btn blocked-btn-discord"><i class="fa-brands fa-discord"></i> Login with Discord</a>
-<p class="blocked-note">Logged-in users are exempt from this check.</p>
-</div>
-<script src="/static/js/cookie-banner.js?v=3"></script>
-    <script src="/static/js/blocked-vpn.js?v=2"></script>
-    <script defer src="https://umami.disc-tools.de/script.js" data-website-id="71c24f0f-5dfe-41b7-a2ba-0585cba7946c"></script>
+<body class="public-page">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+        <div class="wrap header-inner">
+            <a class="brand" href="/" aria-label="Disc-Tools home">
+                <img src="/static/assets/img/disc-tools.svg" width="32" height="32" alt="">
+                Disc-Tools
+            </a>
+            <button class="menu-toggle" type="button" aria-controls="navigation" aria-expanded="false" hidden>Menu</button>
+            <nav id="navigation" aria-label="Main navigation">
+                <a href="/#features">Features</a>
+                <a href="/#commands">Commands</a>
+                <a href="/premium/">Premium</a>
+                <a href="https://discord.gg/rtRs8rhj5u">Support</a>
+                <a class="button button-outline" id="dashboard-sign-in" href="https://dash.disc-tools.de/api/auth/login">Sign in with Discord</a>
+                <details class="account-menu" id="dashboard-account" hidden>
+                    <summary class="button button-outline">
+                        <img class="account-avatar" width="26" height="26" alt="">
+                        <span class="account-name"></span>
+                        <span class="account-chevron" aria-hidden="true"></span>
+                    </summary>
+                    <div class="account-actions">
+                        <a href="/my-servers/">My servers</a>
+                        <a href="/profile/">Account</a>
+                        <button type="button" id="dashboard-logout">Logout</button>
+                        <p class="account-error" role="status" hidden></p>
+                    </div>
+                </details>
+            </nav>
+        </div>
+    </header>
+    <main class="wrap public-main" id="main">
+        <section class="state-page">
+            <h1 id="state-title">Connection restricted</h1>
+            <p id="state-message" role="status">The security check has restricted this connection. Try again using your normal connection or contact support.</p>
+            <div class="actions"><a class="button button-primary" href="/">Try again</a></div>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <div class="wrap footer-inner">
+            <a class="brand" href="/"><img src="/static/assets/img/disc-tools.svg" width="26" height="26" alt="">Disc-Tools</a>
+            <nav class="footer-nav" aria-label="Footer navigation">
+                <div>
+                    <h2>Dashboard</h2>
+                    <ul>
+                        <li><a href="/my-servers/">My servers</a></li>
+                        <li><a href="/stats/">Statistics</a></li>
+                        <li><a href="/shop/">Shop</a></li>
+                        <li><a href="/#commands">Bot commands</a></li>
+                        <li><a href="/premium/">Premium</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Community</h2>
+                    <ul>
+                        <li><a href="https://disc-tools.de/partners/">Partner Program</a></li>
+                        <li><a href="https://discord.gg/rtRs8rhj5u">Support server</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Other Disc-Tools services</h2>
+                    <ul>
+                        <li><a href="https://developers.disc-tools.de/">Developers</a></li>
+                        <li><a href="https://disc-tools.de/">Disc-Tools</a></li>
+                        <li><a href="https://hosting.disc-tools.de/">Hosting</a></li>
+                        <li><a href="https://status.disc-tools.de/">Status</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Legal</h2>
+                    <ul>
+                        <li><a href="/legal/imprint/">Imprint</a></li>
+                        <li><a href="/legal/privacy-policy/">Privacy Policy</a></li>
+                        <li><a href="/legal/terms-of-service/">Terms of Service</a></li>
+                        <li><a href="/refund-policy/">Refund Policy</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </footer>
 </body>
 </html>

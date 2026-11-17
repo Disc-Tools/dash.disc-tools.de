@@ -1,237 +1,232 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disc-Tools – Free Discord Tools &amp; Server Dashboard</title>
-    <meta name="description" content="Disc-Tools offers 11 free open-source Discord tools - Avatar CDN, Snowflake Decoder, Embed Builder, Invite Lookup, and more. Manage servers, handle Premium, and grow your community.">
-    <meta property="og:title" content="Disc-Tools – Free Discord Tools &amp; Server Dashboard">
-    <meta property="og:description" content="11 free open-source Discord utilities - avatar CDN, snowflake decoder, timestamp generator, embed builder, and more. Manage servers and Premium from one dashboard.">
-    <meta property="og:image" content="https://dash.disc-tools.de/static/assets/img/og/home.png">
-    <meta name="twitter:image" content="https://dash.disc-tools.de/static/assets/img/og/home.png">
-    <meta property="og:url" content="https://dash.disc-tools.de">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary">
-    <link rel="canonical" href="https://dash.disc-tools.de">
-    <link rel="preconnect" href="https://umami.disc-tools.de">
-    <link rel="stylesheet" href="/static/css/main.css">
-    <link rel="stylesheet" href="/static/css/landing.css">
-    <link rel="stylesheet" href="/static/icons/css/all.min.css">
-    <link rel="icon" type="image/png" href="/static/assets/img/icon.png">
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "Disc-Tools",
-        "url": "https://dash.disc-tools.de",
-        "description": "Free open-source Discord utilities - 11 tools for avatars, embeds, lookups, timestamps, and more.",
-        "sameAs": [
-            "https://github.com/mistr-kebab/dash.disc-tools.de",
-            "https://top.gg/bot/1508899864602345582",
-            "https://disc-tools.de",
-            "https://discord.gg/rtRs8rhj5u"
-        ],
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://dash.disc-tools.de/?q={search_term_string}",
-            "query-input": "required name=search_term_string"
-        }
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Home",
-                "item": "https://dash.disc-tools.de"
-            }
-        ]
-    }
-    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Manage verification, server stats and backups for your Discord community with Disc-Tools.">
+    <meta name="theme-color" content="#111014">
+    <title>Disc-Tools | Discord Dashboard</title>
+    <link rel="icon" href="/static/assets/img/disc-tools.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://dash.disc-tools.de" crossorigin>
+    <link rel="preload" href="/static/fonts/SpaceGrotesk/SpaceGrotesk.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/static/css/dashboard.css?v=launch-20261117">
+    <script src="/static/js/dashboard-session.js?v=launch-20261117" defer></script>
+    <script src="/static/js/dashboard.js?v=launch-20261117" defer></script>
+    <script src="/static/js/landing.js?v=launch-20261117" defer></script>
 </head>
-<body class="page-landing">
-    <template-header data-page="home"></template-header>
-
-    <section class="lp-hero">
-        <div class="lp-hero-visual" aria-hidden="true">
-            <div class="lp-hero-bg"></div>
-            <div class="lp-hero-shade"></div>
-            <div class="lp-hero-blur"></div>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+        <div class="wrap header-inner">
+            <a class="brand" href="/" aria-label="Disc-Tools home">
+                <img src="/static/assets/img/disc-tools.svg" width="32" height="32" alt="">
+                Disc-Tools
+            </a>
+            <button class="menu-toggle" type="button" aria-controls="navigation" aria-expanded="false" hidden>Menu</button>
+            <nav id="navigation" aria-label="Main navigation">
+                <a href="#features">Features</a>
+                <a href="#commands">Commands</a>
+                <a href="/premium/">Premium</a>
+                <a href="https://discord.gg/rtRs8rhj5u">Support</a>
+                <a class="button button-outline" id="dashboard-sign-in" href="https://dash.disc-tools.de/api/auth/login">Sign in with Discord</a>
+                <details class="account-menu" id="dashboard-account" hidden>
+                    <summary class="button button-outline">
+                        <img class="account-avatar" width="26" height="26" alt="">
+                        <span class="account-name"></span>
+                        <span class="account-chevron" aria-hidden="true"></span>
+                    </summary>
+                    <div class="account-actions">
+                        <a href="/my-servers/">My servers</a>
+                        <a href="/profile/">Account</a>
+                        <button type="button" id="dashboard-logout">Logout</button>
+                        <p class="account-error" role="status" hidden></p>
+                    </div>
+                </details>
+            </nav>
         </div>
-        <div class="lp-wide lp-hero-body">
-            <div class="lp-hero-copy">
-                <h1>Disc<span class="accent">-</span>Tools</h1>
-                <p class="lp-hero-lead">Discord utilities for your server - 11 free tools including quote GIFs, lookups, user history, and alt detection. Manage invites, servers, and Premium from one dashboard.</p>
-                <div class="lp-hero-actions" id="hero-actions">
-                    <a href="/invite" class="lp-btn lp-btn-primary"><i class="fa-solid fa-plus"></i> Add to Server</a>
-                    <a href="https://discord.gg/rtRs8rhj5u" class="lp-btn lp-btn-ghost"><i class="fa-brands fa-discord"></i> Support</a>
+    </header>
+    <main id="main">
+        <section class="wrap hero" aria-labelledby="headline">
+            <div class="hero-copy">
+                <h1 id="headline">Your Discord server, <em>under control.</em></h1>
+                <p class="intro">Set up member verification, check your server stats and manage backups from one dashboard.</p>
+                <div class="actions">
+                    <a class="button button-primary" href="/my-servers/">Open dashboard <span aria-hidden="true">↗</span></a>
+                    <a class="button button-outline" href="/invite/">Add to Discord</a>
                 </div>
             </div>
-            <aside class="lp-hero-aside">
-                <div class="lp-hero-aside-item">
-                    <span class="lp-hero-aside-icon"><i class="fa-brands fa-discord"></i></span>
-                    <div>
-                        <strong>Bot</strong>
-                        <p>Commands inside Discord - quote GIFs, lookups, user history, alt&nbsp;detection.</p>
-                    </div>
-                </div>
-                <div class="lp-hero-aside-item">
-                    <span class="lp-hero-aside-icon"><i class="fa-solid fa-layer-group"></i></span>
-                    <div>
-                        <strong>Dashboard</strong>
-                        <p>Invite the bot, log in with Discord, manage servers, handle&nbsp;Premium.</p>
-                    </div>
-                </div>
-                <div class="lp-hero-aside-item">
-                    <span class="lp-hero-aside-icon"><i class="fa-solid fa-crown"></i></span>
-                    <div>
-                        <strong>Premium</strong>
-                        <p>Alt detection &middot; HD&nbsp;GIFs &middot; Exclusive&nbsp;role &middot; €5/month.</p>
-                    </div>
-                </div>
-            </aside>
-        </div>
-    </section>
 
-    <main class="lp-main">
-        <div class="lp-wide">
-
-            <section class="lp-features">
-                <header class="lp-section-head">
-                    <h2>Features</h2>
-                    <p>What Disc-Tools does on your server</p>
-                </header>
-                <div class="lp-feature-grid">
-                    <article class="lp-feature">
-                        <span class="lp-feature-icon"><i class="fa-solid fa-grid-2"></i></span>
-                        <h3>11 Free Tools</h3>
-                        <p>Avatar CDN, Snowflake Decoder, Embed Builder, Timestamp Generator, and more - all usable via slash commands.</p>
-                    </article>
-                    <article class="lp-feature">
-                        <span class="lp-feature-icon"><i class="fa-solid fa-image"></i></span>
-                        <h3>Quote GIFs</h3>
-                        <p>Turn a message into an animated GIF. Premium drops the watermark and increases quality.</p>
-                    </article>
-                    <article class="lp-feature">
-                        <span class="lp-feature-icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
-                        <h3>User history</h3>
-                        <p>Look up previous usernames and avatars for any Discord user ID.</p>
-                    </article>
-                    <article class="lp-feature">
-                        <span class="lp-feature-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
-                        <h3>Server &amp; invite lookups</h3>
-                        <p>Get details on a guild or invite link directly from Discord.</p>
-                    </article>
-                    <article class="lp-feature lp-feature--premium">
-                        <span class="lp-feature-icon lp-feature-icon--premium"><i class="fa-solid fa-user-shield"></i></span>
-                        <h3>Alt detection <span class="lp-tag">Premium</span></h3>
-                        <p>Surface likely linked accounts when someone tries to evade a ban.</p>
-                    </article>
-                </div>
+            <section class="features" id="features" aria-labelledby="feature-title">
+                <h2 id="feature-title" tabindex="-1">Server management</h2>
+                <dl class="feature-list">
+                    <div>
+                        <dt>Verification</dt>
+                        <dd>Set up a verification step for new members.</dd>
+                    </div>
+                    <div>
+                        <dt>Server stats</dt>
+                        <dd>Track member counts and activity over time.</dd>
+                    </div>
+                    <div>
+                        <dt>Backups</dt>
+                        <dd>Save your server configuration before making changes.</dd>
+                    </div>
+                </dl>
             </section>
+        </section>
 
-            <section class="lp-stats">
-                <div class="lp-stat">
-                    <span class="lp-stat-value" id="lp-stat-servers">-</span>
-                    <span class="lp-stat-label">Servers</span>
+        <section class="communities" aria-labelledby="communities-title" data-loading>
+            <div class="wrap communities-header">
+                <h2 id="communities-title">Servers using Disc-Tools</h2>
+                <button class="marquee-toggle" type="button" aria-controls="community-marquee" hidden>Pause motion</button>
+            </div>
+            <div class="marquee" id="community-marquee">
+                <div class="marquee-row">
+                    <div class="marquee-track">
+                        <ul class="community-list"></ul>
+                    </div>
                 </div>
-                <div class="lp-stat">
-                    <span class="lp-stat-value" id="lp-stat-community">-</span>
-                    <span class="lp-stat-label">Community</span>
-                </div>
-                <div class="lp-stat">
-                    <span class="lp-stat-value" id="lp-stat-users">-</span>
-                    <span class="lp-stat-label">Total Users</span>
-                </div>
-                <div class="lp-stat">
-                    <span class="lp-stat-value" id="lp-stat-premium">-</span>
-                    <span class="lp-stat-label">Premium Users</span>
-                </div>
-            </section>
-
-            <section class="lp-panels">
-                <article class="lp-panel">
-                    <h2>About this dashboard</h2>
-                    <p>Log in with Discord to see every server you administrate. If Disc-Tools is already there, you can jump straight in. If not, you get a one-click invite.</p>
-                    <p>Premium subscriptions and gifts are handled here too - subscribe yourself or send someone a month for €4 via their user ID.</p>
+            </div>
+        </section>
+        <section class="wrap landing-section dashboard-workflows" aria-labelledby="workflows-title">
+            <div class="section-intro">
+                <h2 id="workflows-title">Inside the dashboard</h2>
+                <p>Choose a server you manage to review its activity and configure the bot for that community.</p>
+                <a class="button button-outline" href="/my-servers/">Go to My servers <span aria-hidden="true">↗</span></a>
+            </div>
+            <div class="workflow-overview">
+                <article class="workflow-primary">
+                    <h3>See how your server is growing</h3>
+                    <p>Check how many members are online, see your current boosts and compare member growth over the last 3, 7 or 30 days.</p>
                 </article>
-                <aside class="lp-premium">
-                    <p class="lp-premium-label">Premium</p>
-                    <p class="lp-premium-price"><strong>€5</strong> / month</p>
-                    <ul class="lp-premium-list">
-                        <li><i class="fa-solid fa-check"></i> Alt account detection</li>
-                        <li><i class="fa-solid fa-check"></i> HD quote GIFs, no watermark</li>
-                        <li><i class="fa-solid fa-check"></i> Exclusive role on our Discord</li>
-                        <li><i class="fa-solid fa-check"></i> Early access to new commands</li>
-                    </ul>
-                    <a href="/premium" class="lp-btn lp-btn-primary lp-btn-block">View plans</a>
-                    <p class="lp-premium-note">Cancel anytime · Gift from €4</p>
-                </aside>
-            </section>
+                <article>
+                    <h3>Honeypot channel</h3>
+                    <p>Set aside a channel for detecting spam. When someone posts there, Disc-Tools deletes the message and applies the kick or ban you configured.</p>
+                </article>
+                <article>
+                    <h3>DISBOARD bump reminders</h3>
+                    <p>Pick the channel where you bump your server. Disc-Tools can remind the person who bumped it two hours later, when the next bump is available.</p>
+                </article>
+            </div>
+        </section>
 
-            <section class="lp-steps">
-                <header class="lp-section-head">
-                    <h2>Getting Started</h2>
-                    <p>Three steps to set up Disc-Tools</p>
-                </header>
-                <div class="lp-steps-grid">
-                    <div class="lp-step">
-                        <span class="lp-step-num">1</span>
-                        <h3>Invite the bot</h3>
-                        <p>Add Disc-Tools to your server with one click - no configuration needed.</p>
-                    </div>
-                    <div class="lp-step">
-                        <span class="lp-step-num">2</span>
-                        <h3>Use commands</h3>
-                        <p>Run <strong>/quote</strong>, <strong>/history</strong>, <strong>/lookup</strong> and more right in Discord.</p>
-                    </div>
-                    <div class="lp-step">
-                        <span class="lp-step-num">3</span>
-                        <h3>Go Premium</h3>
-                        <p>Unlock alt detection, HD GIFs and more for €5/month. Manage it all here.</p>
-                    </div>
-                </div>
-            </section>
+        <section class="wrap landing-section section-columns" id="commands" aria-labelledby="commands-title">
+            <div class="section-intro">
+                <h2 id="commands-title" tabindex="-1">Disc-Tools Public Bot commands</h2>
+                <p>Type <code>/</code> in Discord and select Disc-Tools to use these commands.</p>
+            </div>
+            <dl class="command-list">
+                <div><dt><code>/avatar</code></dt><dd>Copy a Discord user’s avatar URL.</dd></div>
+                <div><dt><code>/banner</code></dt><dd>Get a Discord user’s banner URL.</dd></div>
+                <div><dt><code>/username-history</code></dt><dd>Look up a user’s recorded Discord username history.</dd></div>
+                <div><dt><code>/emoji</code></dt><dd>Enlarge a custom emoji and see its details.</dd></div>
+                <div><dt><code>/invite-lookup</code></dt><dd>Check which server an invite points to.</dd></div>
+                <div><dt><code>/server-lookup</code></dt><dd>See public server information when its widget is enabled.</dd></div>
+                <div><dt><code>/timestamp</code></dt><dd>Format a date and time that each reader sees in their local time zone.</dd></div>
+                <div><dt><code>/color</code></dt><dd>Convert a hex color to RGB and an integer.</dd></div>
+                <div><dt><code>/quote</code></dt><dd>Turn text into a shareable quote image.</dd></div>
+                <div><dt><code>/gifify</code></dt><dd>Convert an image into a GIF.</dd></div>
+                <div><dt><code>/backup</code></dt><dd>Create, inspect or restore a backup of your server structure.</dd></div>
+                <div><dt><code>/widget</code></dt><dd>Enable or disable your Discord Profile Widget stats.</dd></div>
+                <div><dt><code>/alt</code></dt><dd>Check for linked alt accounts with Premium.</dd></div>
+                <div><dt><code>/premium</code></dt><dd>See what Disc-Tools Premium includes.</dd></div>
+            </dl>
+        </section>
 
-            <nav class="lp-links" aria-label="Quick links">
-                <a href="/invite">Invite bot</a>
-                <span>·</span>
-                <a href="https://top.gg/bot/1508899864602345582">Top.gg</a>
-                <span>·</span>
-                <a href="https://disc-tools.de">Website</a>
-                <span>·</span>
-                <a href="https://discord.gg/rtRs8rhj5u">Support</a>
-            </nav>
+        <section class="setup-section" aria-labelledby="setup-title">
+            <div class="wrap landing-section">
+                <h2 id="setup-title">Set up your first server</h2>
+                <ol class="setup-list">
+                    <li>
+                        <h3>Add the bot</h3>
+                        <p>Open the <a href="/invite/">Discord invite</a>, choose a server you manage and authorize Disc-Tools.</p>
+                    </li>
+                    <li>
+                        <h3>Open your server in the dashboard</h3>
+                        <p>Sign in with Discord and select the server from <a href="/my-servers/">My servers</a>. From there you can view server activity and open its settings.</p>
+                    </li>
+                    <li>
+                        <h3>Configure verification</h3>
+                        <p>Choose the verified and unverified roles. In Discord, move the Disc-Tools role above both so it can assign them.</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
 
-        </div>
+        <section class="wrap landing-section premium-section" aria-labelledby="premium-title">
+            <div class="section-intro">
+                <h2 id="premium-title">Disc-Tools Premium</h2>
+                <p>Premium adds alt-account lookups with <code>/alt</code>, watermark-free HD quote GIFs and higher server backup limits. You can also gift a month to another Discord user.</p>
+            </div>
+            <a class="button button-outline" href="/premium/">View Premium <span aria-hidden="true">↗</span></a>
+        </section>
+
+        <section class="wrap landing-section section-columns faq-section" aria-labelledby="faq-title">
+            <div class="section-intro">
+                <h2 id="faq-title">Frequently asked questions</h2>
+                <p>Need a hand with setup? <a href="https://discord.gg/rtRs8rhj5u">Ask in the support server</a>.</p>
+            </div>
+            <div class="faq-list">
+                <details>
+                    <summary>Can I use Disc-Tools for free?</summary>
+                    <p>Yes. You can invite the bot for free and use commands like <code>/avatar</code>, <code>/timestamp</code> and <code>/invite-lookup</code>.</p>
+                </details>
+                <details>
+                    <summary>Why is my server missing from My servers?</summary>
+                    <p>Check that you signed in with the Discord account that has the Manage Server permission there. If Disc-Tools is missing from the server, use the invite shown in My servers.</p>
+                </details>
+                <details>
+                    <summary>What is included in a server backup?</summary>
+                    <p>A backup saves server structure, including roles, channels, permissions and settings. Use <code>/backup list</code> to find the backup ID for <code>/backup restore</code>.</p>
+                </details>
+                <details>
+                    <summary>Where do I manage a Premium subscription?</summary>
+                    <p>Open <a href="/profile/billing/manage/">Manage subscription</a> in the live dashboard to manage or cancel your subscription.</p>
+                </details>
+            </div>
+        </section>
     </main>
-
-    <template-footer></template-footer>
-
-    <div class="cookie-banner" id="cookie-banner">
-        <div class="cookie-header">
-            <i class="fa-solid fa-cookie cookie-icon"></i>
-            <span class="cookie-title">Cookie Consent</span>
+    <footer class="site-footer">
+        <div class="wrap footer-inner">
+            <a class="brand" href="/"><img src="/static/assets/img/disc-tools.svg" width="26" height="26" alt="">Disc-Tools</a>
+            <nav class="footer-nav" aria-label="Footer navigation">
+                <div>
+                    <h2>Dashboard</h2>
+                    <ul>
+                        <li><a href="/my-servers/">My servers</a></li>
+                        <li><a href="/stats/">Statistics</a></li>
+                        <li><a href="/shop/">Shop</a></li>
+                        <li><a href="#commands">Bot commands</a></li>
+                        <li><a href="/premium/">Premium</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Community</h2>
+                    <ul>
+                        <li><a href="https://disc-tools.de/partners/">Partner Program</a></li>
+                        <li><a href="https://discord.gg/rtRs8rhj5u">Support server</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Other Disc-Tools services</h2>
+                    <ul>
+                        <li><a href="https://developers.disc-tools.de/">Developers</a></li>
+                        <li><a href="https://disc-tools.de/">Disc-Tools</a></li>
+                        <li><a href="https://hosting.disc-tools.de/">Hosting</a></li>
+                        <li><a href="https://status.disc-tools.de/">Status</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Legal</h2>
+                    <ul>
+                        <li><a href="/legal/imprint/">Imprint</a></li>
+                        <li><a href="/legal/privacy-policy/">Privacy Policy</a></li>
+                        <li><a href="/legal/terms-of-service/">Terms of Service</a></li>
+                        <li><a href="/refund-policy/">Refund Policy</a></li>
+                    </ul>
+                </div>
+            </nav>
         </div>
-        <div class="cookie-text">
-            This site uses cookies for essential functionality and analytics.
-            <a href="/legal/privacy-policy">Learn more</a>
-        </div>
-        <div class="cookie-btns">
-            <button class="cookie-btn cookie-btn-ghost" data-action="reject">Reject all</button>
-            <button class="cookie-btn cookie-btn-secondary" data-action="essential">Only essential</button>
-            <button class="cookie-btn cookie-btn-primary" data-action="accept">Accept all</button>
-        </div>
-    </div>
-
-    <script src="/static/js/components.js?v=5"></script>
-    <script defer src="/static/js/cookie-banner.js?v=3"></script>
-    <script defer src="/static/js/auth.js?v=2"></script>
-    <script defer src="/static/js/landing.js"></script>
-    <script defer src="https://umami.disc-tools.de/script.js" data-website-id="71c24f0f-5dfe-41b7-a2ba-0585cba7946c"></script>
+    </footer>
 </body>
 </html>

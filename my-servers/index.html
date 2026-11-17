@@ -1,63 +1,134 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Servers – Disc-Tools</title>
-    <meta property="og:title" content="My Servers – Disc-Tools">
-    <meta property="og:description" content="Manage your Discord servers with Disc-Tools.">
-    <meta property="og:image" content="https://dash.disc-tools.de/static/assets/img/icon.png">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary">
-    <link rel="stylesheet" href="/static/css/main.css">
-    <link rel="stylesheet" href="/static/icons/css/all.min.css">
-    <link rel="icon" type="image/png" href="/static/assets/img/icon.png">
-    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111014">
+    <title>My servers | Disc-Tools</title>
+    <link rel="icon" href="/static/assets/img/disc-tools.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://dash.disc-tools.de" crossorigin>
+    <link rel="preload" href="/static/fonts/SpaceGrotesk/SpaceGrotesk.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/static/css/dashboard.css?v=launch-20261117">
+    <link rel="stylesheet" href="/static/css/my-servers.css?v=launch-20261117">
+    <script src="/static/js/dashboard-session.js?v=launch-20261117" defer></script>
+    <script src="/static/js/dashboard.js?v=launch-20261117" defer></script>
+    <script src="/static/js/my-servers.js?v=launch-20261117" defer></script>
 </head>
-<body>
-    <template-header data-page="my-servers"></template-header>
-
-    <div class="container">
-        <div id="content-area">
-            <div class="server-grid" id="loading-state">
-                <div class="servers-section">
-                    <div class="server-grid-inner">
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
-                        <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div><div class="skeleton-btn"></div></div>
+<body class="servers-page">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+        <div class="wrap header-inner">
+            <a class="brand" href="/" aria-label="Disc-Tools home">
+                <img src="/static/assets/img/disc-tools.svg" width="32" height="32" alt="">
+                Disc-Tools
+            </a>
+            <button class="menu-toggle" type="button" aria-controls="navigation" aria-expanded="false" hidden>Menu</button>
+            <nav id="navigation" aria-label="Main navigation">
+                <a href="/#features">Features</a>
+                <a href="/#commands">Commands</a>
+                <a href="/premium/">Premium</a>
+                <a href="https://discord.gg/rtRs8rhj5u">Support</a>
+                <a class="button button-outline" id="dashboard-sign-in" href="https://dash.disc-tools.de/api/auth/login?return=dashboard-my-servers">Sign in with Discord</a>
+                <details class="account-menu" id="dashboard-account" hidden>
+                    <summary class="button button-outline">
+                        <img class="account-avatar" width="26" height="26" alt="">
+                        <span class="account-name"></span>
+                        <span class="account-chevron" aria-hidden="true"></span>
+                    </summary>
+                    <div class="account-actions">
+                        <a href="/my-servers/">My servers</a>
+                        <a href="/profile/">Account</a>
+                        <button type="button" id="dashboard-logout">Logout</button>
+                        <p class="account-error" role="status" hidden></p>
+                    </div>
+                </details>
+            </nav>
+        </div>
+    </header>
+    <main class="wrap servers-main" id="main">
+        <div class="servers-sidebar">
+            <header class="servers-heading">
+                <h1>My servers</h1>
+                <p>Manage the Discord servers where you have the Manage Server permission.</p>
+            </header>
+            <div class="servers-controls" id="servers-controls" hidden>
+                <label for="server-search">Find a server</label>
+                <input id="server-search" type="search" placeholder="Search by name" autocomplete="off">
+                <p id="server-results" role="status"></p>
+            </div>
+        </div>
+        <div class="servers-content">
+            <div class="servers-status is-loading" id="servers-status" role="status">
+                <span class="servers-loading-label">Loading your servers…</span>
+                <div class="server-skeleton" aria-hidden="true">
+                    <div class="skeleton-heading"><span></span></div>
+                    <div class="server-row skeleton-row">
+                        <span class="skeleton-icon"></span>
+                        <span class="skeleton-label"><span></span><span></span></span>
+                        <span class="skeleton-action"></span>
+                    </div>
+                    <div class="server-row skeleton-row">
+                        <span class="skeleton-icon"></span>
+                        <span class="skeleton-label"><span></span><span></span></span>
+                        <span class="skeleton-action"></span>
+                    </div>
+                    <div class="server-row skeleton-row">
+                        <span class="skeleton-icon"></span>
+                        <span class="skeleton-label"><span></span><span></span></span>
+                        <span class="skeleton-action"></span>
+                    </div>
+                    <div class="server-row skeleton-row">
+                        <span class="skeleton-icon"></span>
+                        <span class="skeleton-label"><span></span><span></span></span>
+                        <span class="skeleton-action"></span>
                     </div>
                 </div>
             </div>
+            <div id="server-groups"></div>
+            <noscript><p><a href="https://dash.disc-tools.de/my-servers/">Open My servers on the live dashboard</a>.</p></noscript>
         </div>
-    </div>
-
-    <template-footer></template-footer>
-
-    <script src="/static/js/components.js?v=5"></script>
-    <script src="/static/js/auth.js?v=2"></script>
-    <script src="/static/js/cookie-banner.js?v=3"></script>
-    <script src="/static/js/servers.js?v=2"></script>
-    <script defer src="https://umami.disc-tools.de/script.js" data-website-id="71c24f0f-5dfe-41b7-a2ba-0585cba7946c"></script>
+    </main>
+    <footer class="site-footer">
+        <div class="wrap footer-inner">
+            <a class="brand" href="/"><img src="/static/assets/img/disc-tools.svg" width="26" height="26" alt="">Disc-Tools</a>
+            <nav class="footer-nav" aria-label="Footer navigation">
+                <div>
+                    <h2>Dashboard</h2>
+                    <ul>
+                        <li><a href="/my-servers/">My servers</a></li>
+                        <li><a href="/stats/">Statistics</a></li>
+                        <li><a href="/shop/">Shop</a></li>
+                        <li><a href="/#commands">Bot commands</a></li>
+                        <li><a href="/premium/">Premium</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Community</h2>
+                    <ul>
+                        <li><a href="https://disc-tools.de/partners/">Partner Program</a></li>
+                        <li><a href="https://discord.gg/rtRs8rhj5u">Support server</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Other Disc-Tools services</h2>
+                    <ul>
+                        <li><a href="https://developers.disc-tools.de/">Developers</a></li>
+                        <li><a href="https://disc-tools.de/">Disc-Tools</a></li>
+                        <li><a href="https://hosting.disc-tools.de/">Hosting</a></li>
+                        <li><a href="https://status.disc-tools.de/">Status</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Legal</h2>
+                    <ul>
+                        <li><a href="/legal/imprint/">Imprint</a></li>
+                        <li><a href="/legal/privacy-policy/">Privacy Policy</a></li>
+                        <li><a href="/legal/terms-of-service/">Terms of Service</a></li>
+                        <li><a href="/refund-policy/">Refund Policy</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </footer>
 </body>
 </html>

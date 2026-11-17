@@ -1,86 +1,77 @@
-document.addEventListener('DOMContentLoaded', function () {
-    var yearEl = document.getElementById('year');
-    if (yearEl) {
-        yearEl.textContent = new Date().getFullYear();
-    }
+const marquee = document.getElementById('community-marquee');
+const marqueeToggle = document.querySelector('.marquee-toggle');
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const communities = marquee.closest('.communities');
 
-    var statTargets = {};
-    var statsAnimated = false;
-
-    function animateCount(el, target, duration) {
-        var startTime = null;
-        function step(ts) {
-            if (!startTime) startTime = ts;
-            var p = Math.min((ts - startTime) / duration, 1);
-            var eased = 1 - Math.pow(1 - p, 3);
-            el.textContent = Math.floor(eased * target).toLocaleString();
-            if (p < 1) {
-                requestAnimationFrame(step);
-            }
-        }
-        requestAnimationFrame(step);
-    }
-
-    function runStatsAnimation() {
-        if (statsAnimated) return;
-        statsAnimated = true;
-        var dur = 1600;
-        var s = document.getElementById('lp-stat-servers');
-        var c = document.getElementById('lp-stat-community');
-        var u = document.getElementById('lp-stat-users');
-        var p = document.getElementById('lp-stat-premium');
-        if (s && statTargets.servers !== undefined) animateCount(s, statTargets.servers, dur);
-        if (c && statTargets.community !== undefined) animateCount(c, statTargets.community, dur);
-        if (u && statTargets.users !== undefined) animateCount(u, statTargets.users, dur);
-        if (p && statTargets.premium !== undefined) animateCount(p, statTargets.premium, dur);
-    }
-
-    fetch('/api/stats')
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-            statTargets.servers = data.servers || 0;
-            statTargets.community = data.communityMembers || 0;
-            statTargets.users = data.totalUsers || 0;
-            statTargets.premium = data.premiumUsers || 0;
-
-            var statsSection = document.querySelector('.lp-stats');
-            if (statsSection) {
-                var observer = new IntersectionObserver(function(entries) {
-                    entries.forEach(function(entry) {
-                        if (entry.isIntersecting) {
-                            runStatsAnimation();
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, { threshold: 0.3 });
-                observer.observe(statsSection);
-            } else {
-                runStatsAnimation();
-            }
-        })
-        .catch(function() {});
-
-    checkAuth().then(function (auth) {
-        var headerRight = document.getElementById('header-right');
-        if (headerRight) updateHeader(auth, headerRight);
-
-        if (!auth.authenticated || !auth.user) return;
-
-        var navServers = document.getElementById('nav-servers');
-        if (navServers) {
-            navServers.href = '/my-servers';
-            navServers.classList.remove('hidden');
-        }
-
-        var actions = document.getElementById('hero-actions');
-        if (actions) {
-            actions.innerHTML =
-                '<a href="/my-servers" class="lp-btn lp-btn-primary">' +
-                    '<i class="fa-solid fa-layer-group"></i> My Servers' +
-                '</a>' +
-                '<a href="/premium" class="lp-btn lp-btn-ghost">' +
-                    '<i class="fa-solid fa-crown"></i> Premium' +
-                '</a>';
-        }
+async function loadCommunities() {
+    const endpoint = '/api/community-showcase';
+    const response = await fetch(endpoint, {
+        credentials: 'omit',
+        signal: AbortSignal.timeout(8000)
     });
+    if (!response.ok) throw new Error('Community showcase unavailable');
+
+    const servers = await response.json();
+    if (!Array.isArray(servers) || !servers.length) throw new Error('No servers available');
+
+    const firstRow = marquee.querySelector('.marquee-row');
+    const rows = [firstRow];
+    while (rows.length < Math.min(3, servers.length)) {
+        const row = firstRow.cloneNode(true);
+        marquee.append(row);
+        rows.push(row);
+    }
+
+    const lists = rows.map(row => row.querySelector('.community-list'));
+    servers.forEach((server, index) => {
+        const item = document.createElement('li');
+        if (server.iconUrl) {
+            const icon = document.createElement('img');
+            icon.className = 'community-icon';
+            icon.width = 32;
+            icon.height = 32;
+            icon.alt = '';
+            icon.loading = 'lazy';
+            icon.decoding = 'async';
+            icon.fetchPriority = 'low';
+            icon.src = server.iconUrl;
+            item.append(icon);
+        }
+        item.append(server.name);
+        lists[index % lists.length].append(item);
+    });
+
+    for (const list of lists) {
+        const copy = list.cloneNode(true);
+        copy.classList.add('marquee-copy');
+        copy.setAttribute('aria-hidden', 'true');
+        list.after(copy);
+        list.parentElement.style.setProperty('--duration', `${Math.max(28, list.children.length * 4)}s`);
+    }
+
+    const heading = document.getElementById('communities-title');
+    const count = new Intl.NumberFormat(document.documentElement.lang).format(servers.length);
+    heading.textContent = `${count} ${servers.length === 1 ? 'server' : 'servers'} using Disc-Tools`;
+    syncMarquee();
+    communities.removeAttribute('data-loading');
+}
+
+let motionPaused = false;
+
+function syncMarquee() {
+    marqueeToggle.hidden = reducedMotion.matches;
+    marquee.toggleAttribute('data-motion', !reducedMotion.matches);
+    marquee.toggleAttribute('data-paused', motionPaused);
+    marqueeToggle.textContent = motionPaused ? 'Resume motion' : 'Pause motion';
+}
+
+marqueeToggle.addEventListener('click', () => {
+    motionPaused = !motionPaused;
+    syncMarquee();
+});
+
+reducedMotion.addEventListener('change', syncMarquee);
+loadCommunities().catch(error => {
+    communities.hidden = true;
+    console.warn('Could not load the server showcase', error);
 });
