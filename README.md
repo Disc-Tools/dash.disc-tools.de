@@ -59,3 +59,9 @@ The backend runs separately in Pterodactyl. The reference .env.example describes
 CI runs HTML and CSS checks and JavaScript syntax checks. CodeQL scans JavaScript and GitHub Actions. Browser checks cover desktop and mobile layouts and simulated API interactions. Real Discord authorization and billing changes need verification with real accounts.
 
 [Latest release](https://github.com/Disc-Tools/dash.disc-tools.de/releases/latest) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [MIT license](LICENSE)
+
+## AI assistance
+
+Claude and ChatGPT supported the development of this dashboard.
+
+[![Claude](https://img.shields.io/badge/Claude-Anthropic-D97757?style=flat-square)](https://claude.ai/) [![ChatGPT](https://img.shields.io/badge/ChatGPT-OpenAI-10A37F?style=flat-square)](https://chatgpt.com/)
