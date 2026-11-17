@@ -253,14 +253,25 @@
         var link = e.target.closest('a');
         if (!link || !isDirty()) return;
         var href = link.getAttribute('href');
-        if (!href || href.startsWith('#') || href.startsWith('javascript:')) return;
+        if (!href || href.startsWith('#')) return;
+        var destination;
+        try {
+            destination = new URL(href, window.location.href);
+        } catch {
+            e.preventDefault();
+            return;
+        }
+        if (destination.protocol !== 'https:' && destination.protocol !== 'http:') {
+            e.preventDefault();
+            return;
+        }
         if (href === window.location.pathname) return;
         e.preventDefault();
         bar.style.display = 'flex';
         bar.classList.add('shake');
         setTimeout(function() { bar.classList.remove('shake'); }, 400);
         if (confirm('You have unsaved changes. Leave anyway?')) {
-            window.location.href = href;
+            window.location.href = destination.href;
         }
     });
 
