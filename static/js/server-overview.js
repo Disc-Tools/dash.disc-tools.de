@@ -261,8 +261,8 @@ async function loadOverview() {
 }
 
 loadOverview().catch(() => {
-    setManageStatus('The server overview could not be loaded. Reload the page or open the live dashboard.', {
+    setManageStatus('The server overview could not be loaded. Please try again.', {
         url: new URL(`/manage/${serverId}/overview`, dashboardOrigin),
-        label: 'Open live overview'
+        label: 'Try again'
     });
 });

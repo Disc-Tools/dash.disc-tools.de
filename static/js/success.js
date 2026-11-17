@@ -62,5 +62,5 @@ async function updateResult() {
 }
 updateResult().catch(() => {
     stateTitle.textContent = 'Could not confirm this action';
-    stateMessage.textContent = 'Please try again from the live dashboard or contact support.';
+    stateMessage.textContent = 'Please try again or contact support.';
 });

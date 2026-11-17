@@ -4,7 +4,6 @@ const serverControls = document.getElementById('servers-controls');
 const serverSearch = document.getElementById('server-search');
 const serverResults = document.getElementById('server-results');
 const loginUrl = new URL('/api/auth/login?return=dashboard-my-servers', dashboardOrigin);
-const liveServersUrl = new URL('/my-servers/', dashboardOrigin);
 
 function serverLink(label, url, primary = false) {
     const link = document.createElement('a');
@@ -152,6 +151,6 @@ document.addEventListener('dashboard-logout', () => {
 });
 
 loadServers().catch(() => {
-    showServerStatus('Your servers could not be loaded. Reload this page or open the live dashboard.');
-    serversStatus.append(serverLink('Open live dashboard', liveServersUrl));
+    showServerStatus('Your servers could not be loaded. Please reload this page.');
+    serversStatus.append(serverLink('Try again', '/my-servers/'));
 });
