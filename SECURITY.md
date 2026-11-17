@@ -6,7 +6,7 @@ Only the latest version on the `main` branch is supported with security updates.
 
 | Version | Supported          |
 |---------|--------------------|
-| main    | :white_check_mark: |
+| 2.x / main | :white_check_mark: |
 
 ## Reporting a Vulnerability
 
