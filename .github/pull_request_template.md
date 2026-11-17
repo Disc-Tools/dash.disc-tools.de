@@ -1,12 +1,11 @@
-## Summary
+## Change
 
-<!-- Briefly describe what this PR does -->
+Describe the problem and the resulting behavior.
 
-## Checklist
+## Validation
 
-- [ ] HTML validates (no broken markup)
-- [ ] CSS follows existing conventions
-- [ ] JS passes `node -c` syntax check
-- [ ] No new inline styles or inline event handlers added
-- [ ] Header/footer use `<template-header>` / `<template-footer>` pattern (if applicable)
-- [ ] Tested in Chrome and Firefox
+List the checks performed and any verification still pending.
+
+## Screenshots
+
+Include screenshots for visible UI changes when available.
