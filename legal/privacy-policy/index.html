@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/static/css/pages.css?v=launch-20261117">
     <script src="/static/js/dashboard-session.js?v=launch-20261117" defer></script>
     <script src="/static/js/dashboard.js?v=launch-20261117-3" defer></script>
+    <link rel="stylesheet" href="/static/css/ads-consent.css?v=20261120">
 </head>
 <body class="public-page">
     <a class="skip-link" href="#main">Skip to content</a>
@@ -58,18 +59,16 @@
             <h2>3. Server Logs</h2>
             <p>Our web server and API log each request including your <strong>IP address, timestamp, HTTP method, requested path, HTTP status code, user agent, and any error messages</strong>. These logs are automatically rotated and kept for a maximum of 30 days. The legal basis is Art. 6(1)(f) GDPR - our legitimate interest in detecting and defending against abuse.</p>
 
-            <h2>4. Cookies</h2>
-            <p>We use these authentication cookies to provide the dashboard. The optional analytics preference is stored in your browser’s local storage:</p>
+            <h2>4. Cookies and local storage</h2>
+            <p>Authentication cookies are required to provide the dashboard. Your optional analytics and advertising choices are saved in your browser’s local storage under <strong>disc-tools-dashboard-consent-v4</strong>. Umami and Google AdSense are loaded only after you consent to their respective categories.</p>
             <ul>
                 <li><strong>dash_token</strong> - JWT session token for authentication (7 days)</li>
                 <li><strong>oauth_state</strong> - CSRF protection token during login (10 minutes)</li>
-                <li><strong>dash_cookie_consent</strong> - stores your analytics preference in local storage until you clear it</li>
-                                <li><strong>dash_analytics_enabled</strong> - records that you accepted analytics; removed if you withdraw consent
             </ul>
-            <p>No advertising, profiling, or third-party tracking cookies are used on the dashboard.</p>
+            <p>When you allow advertising, Google AdSense may use cookies or similar technologies to serve and measure ads. See <a href="https://policies.google.com/technologies/cookies" rel="noopener noreferrer">Google’s information about cookies</a>.</p>
 
             <h2>5. Analytics</h2>
-            <p>We use a self-hosted instance of <strong>Umami Analytics</strong> on our own domain (<a href="https://umami.disc-tools.de" rel="noopener noreferrer">umami.disc-tools.de</a>) for website analytics. The analytics script is only loaded after you choose “Accept all” in the cookie banner. Umami is configured not to use cookies. The legal basis for this optional processing is your consent under Art. 6(1)(a) GDPR. You can withdraw consent at any time using the control below; withdrawal does not affect processing carried out before it.</p>
+            <p>We use a self-hosted instance of <strong>Umami Analytics</strong> on our own domain (<a href="https://umami.disc-tools.de" rel="noopener noreferrer">umami.disc-tools.de</a>) for website analytics. The analytics script is loaded only after you consent to analytics in the cookie banner. Umami is configured not to use cookies. You can withdraw consent at any time using “Cookie settings” in the footer; withdrawal does not affect processing carried out before it.</p>
             <p><button type="button" id="cookie-settings">Change cookie preferences</button></p>
 
             <h2>6. Discord OAuth2 Login</h2>
@@ -181,5 +180,6 @@
             </nav>
         </div>
     </footer>
+    <script src="/static/js/ads-consent.js?v=20261120-consent-v4" defer></script>
 </body>
 </html>

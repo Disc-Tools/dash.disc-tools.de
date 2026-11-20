@@ -1,0 +1,40 @@
+.dashboard-consent {
+    position: fixed;
+    z-index: 1000;
+    inset: auto 20px 20px auto;
+    width: min(430px, calc(100vw - 40px));
+    padding: 22px;
+    color: var(--text, #f7f4fb);
+    background: var(--panel, #1a181f);
+    border: 1px solid var(--border, #393640);
+    border-radius: 14px;
+    box-shadow: 0 16px 48px rgb(0 0 0 / 45%);
+}
+.dashboard-consent[hidden], .dashboard-consent-options[hidden] { display: none; }
+.dashboard-consent h2 { margin: 0 0 8px; font: 600 1.2rem var(--display, inherit); }
+.dashboard-consent p { color: var(--muted, #c2bec9); margin: 0 0 16px; line-height: 1.5; }
+.dashboard-consent-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.dashboard-consent button {
+    min-height: 40px;
+    padding: 8px 12px;
+    color: inherit;
+    background: transparent;
+    border: 1px solid var(--border, #393640);
+    border-radius: 8px;
+    font: inherit;
+    cursor: pointer;
+}
+.dashboard-consent button[data-consent="all"], .dashboard-consent-options button {
+    color: #111014;
+    background: var(--accent, #c7a6ff);
+    border-color: transparent;
+}
+.dashboard-consent-options { display: grid; gap: 12px; margin-top: 14px; }
+.dashboard-consent-options label { display: flex; align-items: center; gap: 9px; color: var(--muted, #c2bec9); }
+.dashboard-consent > a { display: inline-block; margin-top: 14px; color: var(--accent-light, #d7a4e9); }
+.dashboard-cookie-settings { margin: 12px 0 0; padding: 0; color: var(--muted, #c2bec9); background: none; border: 0; font: inherit; text-decoration: underline; cursor: pointer; }
+.ad-slot { box-sizing: border-box; width: min(100% - 40px, 980px); min-height: 110px; margin: 28px auto; padding: 10px; text-align: center; border: 1px solid var(--border, #393640); border-radius: 12px; background: var(--panel, #19171e); }
+.ad-slot[hidden] { display: none; }
+.ad-slot::before { content: "Advertisement"; display: block; margin-bottom: 6px; color: var(--muted, #b8afbf); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; }
+.ad-slot ins.adsbygoogle { display: block; min-height: 80px; }
+@media (max-width: 560px) { .dashboard-consent { inset: auto 12px 12px; width: auto; } }
