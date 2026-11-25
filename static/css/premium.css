@@ -38,5 +38,7 @@
 }
 
 .option-action { grid-column: 1 / -1; padding-top: 12px; }
-.option-action .button:disabled { cursor: not-allowed; background: #3e2948; border-color: #644273; color: #cbb7d3; flex-wrap: wrap; }
-.purchase-paused { padding-inline-start: 10px; border-inline-start: 1px solid #775d83; font-weight: 400; font-size: .75rem; }
+.option-action .button:disabled { cursor: wait; opacity: .7; }
+.premium-purchase-status { margin-block: 10px 0; color: var(--accent-light); }
+.premium-purchase-status[data-error="true"] { color: #ffaaa8; }
+.premium-purchase-status[hidden] { display: none; }

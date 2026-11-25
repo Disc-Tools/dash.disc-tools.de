@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#111014">
-    <meta name="description" content="Compare Free and Premium on Disc-Tools, check purchase availability and manage an existing subscription.">
+    <meta name="description" content="Compare Free and Premium on Disc-Tools, choose a plan and manage an existing subscription.">
     <title>Premium | Disc-Tools</title>
     <link rel="icon" href="/static/assets/img/disc-tools.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://dash.disc-tools.de" crossorigin>
     <link rel="preload" href="/static/fonts/SpaceGrotesk/SpaceGrotesk.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/static/css/dashboard.css?v=launch-20261117">
-    <link rel="stylesheet" href="/static/css/premium.css?v=launch-20261117">
+    <link rel="stylesheet" href="/static/css/premium.css?v=launch-20261125">
     <script src="/static/js/dashboard-session.js?v=launch-20261117" defer></script>
     <script src="/static/js/dashboard.js?v=launch-20261117-3" defer></script>
     <link rel="stylesheet" href="/static/css/ads-consent.css?v=20261120">
@@ -57,8 +57,8 @@
                 </div>
             </div>
             <aside class="premium-availability" aria-labelledby="availability-title">
-                <h2 id="availability-title">Purchases paused</h2>
-                <p>New subscriptions, one-time purchases and gifts are temporarily unavailable. Existing memberships remain active.</p>
+                <h2 id="availability-title">Choose your Premium plan</h2>
+                <p>Subscribe monthly, purchase a month with no renewal, or gift Premium to another Discord user. Secure checkout is provided by Stripe.</p>
             </aside>
         </section>
 
@@ -67,25 +67,26 @@
                 <div class="section-intro">
                     <h2 id="pricing-title">Premium options</h2>
                     <p>Disc-Tools offers a recurring subscription, a single month or a gift for another Discord user.</p>
+                    <p class="premium-purchase-status" id="premium-purchase-status" role="status" hidden></p>
                 </div>
                 <dl class="premium-options">
                     <div>
                         <dt>Monthly subscription</dt>
                         <dd class="option-price">€8.99 <small>/ month</small></dd>
                         <dd class="option-note">Renews monthly until cancelled.</dd>
-                        <dd class="option-action"><button class="button button-primary" type="button" disabled aria-describedby="availability-title">Subscribe <span class="purchase-paused">Purchases paused</span></button></dd>
+                        <dd class="option-action"><button class="button button-primary" id="premium-subscribe" type="button">Subscribe</button></dd>
                     </div>
                     <div>
                         <dt>One-time purchase</dt>
                         <dd class="option-price">€8.99</dd>
                         <dd class="option-note">One month of Premium with no automatic renewal.</dd>
-                        <dd class="option-action"><button class="button button-primary" type="button" disabled aria-describedby="availability-title">Buy one month <span class="purchase-paused">Purchases paused</span></button></dd>
+                        <dd class="option-action"><button class="button button-primary" id="premium-one-time" type="button">Buy one month</button></dd>
                     </div>
                     <div>
                         <dt>Gift Premium</dt>
                         <dd class="option-price">€8.99</dd>
                         <dd class="option-note">One month of Premium for another Discord user.</dd>
-                        <dd class="option-action"><button class="button button-primary" type="button" disabled aria-describedby="availability-title">Gift Premium <span class="purchase-paused">Purchases paused</span></button></dd>
+                        <dd class="option-action"><button class="button button-primary" id="premium-gift" type="button">Gift Premium</button></dd>
                     </div>
                 </dl>
             </div>
@@ -120,8 +121,8 @@
             </div>
             <div class="faq-list">
                 <details>
-                    <summary>Does the pause affect my existing Premium membership?</summary>
-                    <p>Existing Premium memberships remain active. The pause applies to new purchases and gifts.</p>
+                    <summary>Can I buy Premium for myself or someone else?</summary>
+                    <p>Yes. Choose a monthly subscription, a non-renewing one-month purchase, or a one-month gift for another Discord user.</p>
                 </details>
                 <details>
                     <summary>Where can I manage or cancel my subscription?</summary>
@@ -176,6 +177,7 @@
             </nav>
         </div>
     </footer>
+    <script src="/static/js/premium-checkout.js?v=20261125" defer></script>
     <script src="/static/js/ads-consent.js?v=20261120-consent-v4" defer></script>
 </body>
 </html>
